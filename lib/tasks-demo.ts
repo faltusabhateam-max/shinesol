@@ -17,7 +17,7 @@ export const DEMO_TASKS: TaskCampaign[] = [
 const IMG = "/media/how-it-works-poster.jpg";
 export const DEMO_QUEUE: (TaskClaim & { [k: string]: any })[] = [
   { id: "demo-t1_c", taskId: "demo-t1", uid: "c", username: "Zorveny", avatar: "3", status: "submitted", taskTitle: DEMO_TASKS[0].title, rewardLamports: 5_540_000, createdAt: ago(30), submittedAt: ago(12),
-    proofs: { a: { text: "@zorveny", auto: true }, b: { text: "@zorveny", image: IMG }, c: { text: "https://x.com/zorveny/status/1845" } } },
+    proofs: { a: { text: "@zorveny" }, b: { text: "@zorveny", image: IMG }, c: { text: "https://x.com/zorveny/status/1845" } } },
   { id: "demo-t1_d", taskId: "demo-t1", uid: "d", username: "solwriter", avatar: "5", status: "submitted", taskTitle: DEMO_TASKS[0].title, rewardLamports: 5_540_000, createdAt: ago(25), submittedAt: ago(8),
     proofs: { a: { text: "@solwriter" }, b: { text: "@solwriter" }, c: { image: IMG } } },
 ];
