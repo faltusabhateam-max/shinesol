@@ -1,0 +1,6 @@
+node_modules
+.next
+.env*
+shots
+*.log
+firestore.rules.previous

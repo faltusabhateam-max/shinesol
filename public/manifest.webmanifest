@@ -1,0 +1,2 @@
+{ "name": "Shine", "short_name": "Shine", "start_url": "/", "display": "standalone", "background_color": "#050307", "theme_color": "#050307",
+  "icons": [{ "src": "/brand/star-192.png", "sizes": "192x192", "type": "image/png" }, { "src": "/brand/star.png", "sizes": "512x512", "type": "image/png" }] }

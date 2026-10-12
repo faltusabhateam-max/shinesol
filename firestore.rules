@@ -1,0 +1,273 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---- Pre-existing behaviour for the "Team Registration" app in this project ----
+    // Kept unchanged for every collection EXCEPT Shine's (shine_*), which are locked down below.
+    match /{coll}/{document=**} {
+      allow read, write: if !coll.matches('^shine_.*');
+      // Shine: the server identity has full access; verified admins can read everything.
+      // Private chats, PIN/TOTP secrets are never readable by admins directly (chat access only via the server's 5-minute consent window).
+      allow read: if coll.matches('^shine_.*') && (isServer() || (!(coll in ['shine_chats', 'shine_secure']) && isAdmin()));
+      allow write: if coll.matches('^shine_.*') && isServer();
+    }
+
+    /* SHINE_RULES_START */
+    function signedIn() { return request.auth != null; }
+    function me() { return request.auth.uid; }
+    function shineAccount() {
+      return signedIn() && request.auth.token.email is string && request.auth.token.email.matches('^[0-9a-f]{40}@users[.]shine[.]app$');
+    }
+    // Shine's server identity (used only by server API routes after verifying the admin's Privy token + ADMIN_EMAILS).
+    function isServer() { return signedIn() && request.auth.uid == '4sEy8JEUhVYlv7Fpzvh18CoBT8w2'; }
+    function metaDoc(n) { return /databases/$(database)/documents/shine_meta/$(n); }
+    // Admins are registered in shine_meta/admins by the server after verification; only the server can write it.
+    function isAdmin() { return signedIn() && (isServer() || request.auth.uid in get(metaDoc('admins')).data.uids); }
+    function active() { return !(me() in get(metaDoc('flags')).data.deactivated); }
+
+    match /shine_meta/flags {
+      allow read: if true;
+    }
+
+    function userDoc(uid) { return /databases/$(database)/documents/shine_users/$(uid); }
+    function isProject() { return exists(userDoc(me())) && get(userDoc(me())).data.role == 'project'; }
+    function str(v, max) { return v is string && v.size() <= max; }
+    function optStr(d, k, max) { return !(k in d) || d[k] == null || str(d[k], max); }
+    function optNum(d, k) { return !(k in d) || d[k] == null || (d[k] is int && d[k] >= 0 && d[k] < 1000000000); }
+    function validProject(p) {
+      return p == null || (p is map
+        && str(p.name, 80)
+        && optStr(p, 'x', 40) && optStr(p, 'telegram', 64) && optStr(p, 'discord', 200)
+        && optNum(p, 'xFollowers') && optNum(p, 'telegramMembers') && optNum(p, 'discordMembers')
+        && p.keys().hasOnly(['name', 'x', 'telegram', 'discord', 'xFollowers', 'telegramMembers', 'discordMembers']));
+    }
+    function validUser(d, uid) {
+      return d.uid == uid
+        && d.username is string && d.username.matches('^[A-Za-z0-9_]{1,15}$')
+        && d.usernameLower == d.username.lower()
+        && d.xHandle == d.username
+        && str(d.telegram, 64) && str(d.discord, 200)
+        && (d.avatar in ['1', '2', '3', '4', '5', '6', '7', '8'] || (d.avatar is string && d.avatar.size() < 150000 && d.avatar.matches('^data:image/(jpeg|png|webp);base64,.*')))
+        && str(d.bio, 1500)
+        && str(d.wallet, 64)
+        && d.role in ['user', 'project']
+        && validProject(d.get('project', null))
+        && d.keys().hasOnly(['uid', 'username', 'usernameLower', 'xHandle', 'telegram', 'discord', 'avatar', 'bio', 'wallet', 'role', 'project', 'createdAt', 'updatedAt'])
+        // username must be claimed by this user (enforces uniqueness)
+        && getAfter(/databases/$(database)/documents/shine_usernames/$(d.usernameLower)).data.uid == uid;
+    }
+
+    match /shine_users/{uid} {
+      allow read: if true;
+      allow create: if shineAccount() && me() == uid && validUser(request.resource.data, uid) && request.resource.data.role == 'user';
+      allow update: if shineAccount() && me() == uid && validUser(request.resource.data, uid)
+        && request.resource.data.createdAt == resource.data.createdAt
+        // once a project, always a project
+        && !(resource.data.role == 'project' && request.resource.data.role != 'project');
+      allow delete: if false;
+    }
+
+    match /shine_usernames/{name} {
+      allow read: if true;
+      allow create: if shineAccount() && request.resource.data.uid == me() && name.matches('^[a-z0-9_]{1,15}$')
+        && request.resource.data.keys().hasOnly(['uid', 'createdAt']);
+      allow delete: if shineAccount() && resource.data.uid == me();
+      allow update: if false;
+    }
+
+    function validField(f) {
+      return f is map && str(f.id, 40) && str(f.label, 140) && f.label.size() > 0
+        && f.type in ['short', 'paragraph', 'link', 'choice', 'multi', 'number', 'email', 'telegram', 'x_follow', 'discord', 'wallet', 'x_post']
+        && f.required is bool
+        && (!('url' in f) || str(f.url, 300)) && (!('description' in f) || str(f.description, 400))
+        && (!('options' in f) || (f.options is list && f.options.size() <= 12));
+    }
+    function validPost(d) {
+      return d.authorUid == me()
+        && str(d.text, 2000) && d.text.size() > 0
+        && (d.image == null || (d.image is string && d.image.size() < 900000 && d.image.matches('^data:image/.*')))
+        && (d.imageRatio == null || d.imageRatio is number)
+        // The custom form builder was retired: new posts use Shine's one-tap apply (form is empty).
+        && d.form is list && d.form.size() <= 25
+        && (d.form.size() == 0 || validField(d.form[0]))
+        && (!('steps' in d) || (d.steps is list && d.steps.size() <= 20))
+        && d.status in ['open', 'closed']
+        && (d.endsAt == null || d.endsAt is timestamp)
+        && str(d.projectName, 80) && str(d.authorUsername, 15) && d.authorAvatar is string
+        && d.keys().hasOnly(['authorUid', 'authorUsername', 'authorAvatar', 'projectName', 'text', 'image', 'imageRatio', 'form', 'steps', 'applicants', 'likes', 'replies', 'shares', 'lastReplyId', 'status', 'endsAt', 'createdAt', 'updatedAt']);
+    }
+    match /shine_posts/{postId} {
+      allow read: if true;
+      allow create: if shineAccount() && active() && isProject() && validPost(request.resource.data)
+        && request.resource.data.get('applicants', 0) == 0 && request.resource.data.get('likes', 0) == 0
+        && request.resource.data.get('replies', 0) == 0 && request.resource.data.get('shares', 0) == 0;
+      allow update: if shineAccount() && active() && resource.data.authorUid == me() && validPost(request.resource.data)
+        && request.resource.data.createdAt == resource.data.createdAt
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['applicants', 'likes', 'replies', 'shares', 'lastReplyId']);
+      // Applicant counter: +1 only together with the applicant's own new application (same batch).
+      allow update: if shineAccount() && active()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['applicants'])
+        && request.resource.data.applicants == resource.data.get('applicants', 0) + 1
+        && !exists(/databases/$(database)/documents/shine_applications/$(postId + '_' + me()))
+        && existsAfter(/databases/$(database)/documents/shine_applications/$(postId + '_' + me()));
+      // Engagement counters, each tied to the matching like / reply document in the same batch.
+      allow update: if shineAccount() && (
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes'])
+          && ((request.resource.data.likes == resource.data.get('likes', 0) + 1 && !exists(likeDoc(postId, me())) && existsAfter(likeDoc(postId, me())))
+            || (request.resource.data.likes == resource.data.get('likes', 0) - 1 && exists(likeDoc(postId, me())) && !existsAfter(likeDoc(postId, me())))))
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['replies', 'lastReplyId']) && request.resource.data.lastReplyId is string
+          && ((request.resource.data.replies == resource.data.get('replies', 0) + 1 && !exists(replyDoc(postId, request.resource.data.lastReplyId)) && existsAfter(replyDoc(postId, request.resource.data.lastReplyId)))
+            || (request.resource.data.replies == resource.data.get('replies', 0) - 1 && exists(replyDoc(postId, request.resource.data.lastReplyId)) && !existsAfter(replyDoc(postId, request.resource.data.lastReplyId)))))
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['shares']) && request.resource.data.shares == resource.data.get('shares', 0) + 1)
+      );
+
+      match /likes/{likeUid} {
+        allow read: if true;
+        allow create: if shineAccount() && active() && me() == likeUid && request.resource.data.uid == me()
+          && request.resource.data.keys().hasOnly(['uid', 'createdAt'])
+          && getAfter(postDoc(postId)).data.get('likes', 0) == get(postDoc(postId)).data.get('likes', 0) + 1;
+        allow delete: if shineAccount() && me() == likeUid
+          && getAfter(postDoc(postId)).data.get('likes', 0) == get(postDoc(postId)).data.get('likes', 0) - 1;
+      }
+      match /replies/{replyId} {
+        allow read: if true;
+        // X-style comments: a reply to the post (parentId null) or to another comment.
+        allow create: if shineAccount() && active() && request.resource.data.uid == me()
+          && str(request.resource.data.text, 1000) && request.resource.data.text.size() > 0
+          && str(request.resource.data.username, 15) && str(request.resource.data.name, 80) && str(request.resource.data.avatar, 200)
+          && (request.resource.data.parentId == null || (request.resource.data.parentId is string && exists(replyDoc(postId, request.resource.data.parentId))))
+          && (request.resource.data.replyTo == null || str(request.resource.data.replyTo, 15))
+          && request.resource.data.get('likes', 0) == 0
+          && request.resource.data.keys().hasOnly(['uid', 'username', 'name', 'avatar', 'text', 'parentId', 'replyTo', 'likes', 'createdAt'])
+          && getAfter(postDoc(postId)).data.get('replies', 0) == get(postDoc(postId)).data.get('replies', 0) + 1;
+        allow delete: if shineAccount() && resource.data.uid == me()
+          && getAfter(postDoc(postId)).data.get('replies', 0) == get(postDoc(postId)).data.get('replies', 0) - 1;
+        function cLike(u) { return /databases/$(database)/documents/shine_posts/$(postId)/replies/$(replyId)/likes/$(u); }
+        allow update: if shineAccount() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes'])
+          && ((request.resource.data.likes == resource.data.get('likes', 0) + 1 && !exists(cLike(me())) && existsAfter(cLike(me())))
+            || (request.resource.data.likes == resource.data.get('likes', 0) - 1 && exists(cLike(me())) && !existsAfter(cLike(me()))));
+        match /likes/{likeUid} {
+          function reply() { return /databases/$(database)/documents/shine_posts/$(postId)/replies/$(replyId); }
+          allow read: if true;
+          allow create: if shineAccount() && active() && me() == likeUid && request.resource.data.uid == me()
+            && request.resource.data.keys().hasOnly(['uid', 'createdAt'])
+            && getAfter(reply()).data.get('likes', 0) == get(reply()).data.get('likes', 0) + 1;
+          allow delete: if shineAccount() && me() == likeUid
+            && getAfter(reply()).data.get('likes', 0) == get(reply()).data.get('likes', 0) - 1;
+        }
+      }
+      allow delete: if shineAccount() && resource.data.authorUid == me();
+    }
+
+    function likeDoc(p, u) { return /databases/$(database)/documents/shine_posts/$(p)/likes/$(u); }
+    function replyDoc(p, r) { return /databases/$(database)/documents/shine_posts/$(p)/replies/$(r); }
+    function postDoc(id) { return /databases/$(database)/documents/shine_posts/$(id); }
+    function postOpen(p) { return p.status == 'open' && (p.endsAt == null || request.time < p.endsAt); }
+    match /shine_applications/{appId} {
+      allow read: if shineAccount() && (resource == null || resource.data.applicantUid == me() || resource.data.projectUid == me());
+      allow create: if shineAccount() && active()
+        && appId == request.resource.data.postId + '_' + me()
+        && request.resource.data.applicantUid == me()
+        && request.resource.data.status == 'pending'
+        && exists(postDoc(request.resource.data.postId))
+        && get(postDoc(request.resource.data.postId)).data.authorUid == request.resource.data.projectUid
+        && request.resource.data.projectUid != me()
+        && postOpen(get(postDoc(request.resource.data.postId)).data)
+        && getAfter(postDoc(request.resource.data.postId)).data.get('applicants', 0) == get(postDoc(request.resource.data.postId)).data.get('applicants', 0) + 1
+        && request.resource.data.answers is map && request.resource.data.answers.size() <= 25
+        && str(request.resource.data.wallet, 64) && request.resource.data.wallet.size() >= 32
+        && str(request.resource.data.signature, 128) && request.resource.data.signature.size() >= 64
+        && str(request.resource.data.signedMessage, 1000)
+        && str(request.resource.data.postExcerpt, 140)
+        && request.resource.data.keys().hasOnly(['postId', 'projectUid', 'projectName', 'applicantUid', 'applicantUsername', 'applicantAvatar', 'answers', 'wallet', 'signature', 'signedMessage', 'postExcerpt', 'status', 'createdAt', 'decidedAt']);
+      allow update: if shineAccount() && resource.data.projectUid == me()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'decidedAt'])
+        && request.resource.data.status in ['approved', 'rejected'];
+      allow delete: if false;
+    }
+
+    function appDoc(id) { return /databases/$(database)/documents/shine_applications/$(id); }
+    function chatDoc(id) { return /databases/$(database)/documents/shine_chats/$(id); }
+    match /shine_chats/{chatId} {
+      allow read: if shineAccount() && (resource == null || me() in resource.data.members);
+      allow create: if shineAccount()
+        && request.resource.data.projectUid == me()
+        && getAfter(appDoc(chatId)).data.projectUid == me()
+        && getAfter(appDoc(chatId)).data.status == 'approved'
+        && request.resource.data.applicantUid == getAfter(appDoc(chatId)).data.applicantUid
+        && request.resource.data.members == [me(), request.resource.data.applicantUid];
+      allow update: if shineAccount() && me() in resource.data.members
+        && (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastMessage', 'updatedAt'])
+            || (resource.data.projectUid == me() && request.resource.data.members == resource.data.members
+                && request.resource.data.projectUid == resource.data.projectUid && request.resource.data.applicantUid == resource.data.applicantUid));
+      allow delete: if false;
+
+      match /messages/{msgId} {
+        function chat() { return get(chatDoc(chatId)).data; }
+        allow read: if shineAccount() && me() in chat().members;
+        allow create: if shineAccount() && active() && me() in chat().members
+          && request.resource.data.senderUid == me()
+          && request.resource.data.type in ['text', 'image', 'wallet_request', 'wallet_share', 'payment']
+          && (request.resource.data.type != 'payment' || (chat().projectUid == me() && request.resource.data.amount is number && str(request.resource.data.signature, 128)))
+          && (request.resource.data.type != 'wallet_request' || chat().projectUid == me())
+          && (!('text' in request.resource.data) || str(request.resource.data.text, 4000))
+          && (!('image' in request.resource.data) || (request.resource.data.image is string && request.resource.data.image.size() < 900000))
+          && request.resource.data.keys().hasOnly(['senderUid', 'type', 'text', 'image', 'wallet', 'amount', 'signature', 'createdAt']);
+        allow update, delete: if false;
+      }
+    }
+
+    // ---- Escrow plans: written only by the server after on-chain verification ----
+    match /shine_escrow/{chatId} {
+      allow read: if shineAccount() && (resource == null || me() == resource.data.projectUid || me() == resource.data.creatorUid);
+    }
+    match /shine_verify/{uid} {
+      allow read: if shineAccount() && me() == uid;
+    }
+    match /shine_prefs/{uid} {
+      allow read: if shineAccount() && me() == uid;
+      allow write: if shineAccount() && me() == uid && request.resource.data.size() <= 20
+        && request.resource.data.keys().hasOnly(['push', 'chat', 'applications', 'payments', 'mentions', 'marketing', 'pinOnOpen', 'hideBalance', 'updatedAt']);
+    }
+
+    match /shine_transactions/{sig} {
+      allow read: if shineAccount() && (resource.data.fromUid == me() || resource.data.toUid == me());
+      allow create: if shineAccount() && request.resource.data.fromUid == me()
+        && request.resource.data.signature == sig
+        && exists(chatDoc(request.resource.data.chatId))
+        && get(chatDoc(request.resource.data.chatId)).data.projectUid == me()
+        && get(chatDoc(request.resource.data.chatId)).data.applicantUid == request.resource.data.toUid;
+      allow update, delete: if false;
+    }
+    // ---- Shine Support: one thread per account (doc id = uid). Admins reply from the admin panel. ----
+    match /shine_support/{uid} {
+      allow read: if shineAccount() && me() == uid;
+      allow create, update: if (shineAccount() && me() == uid && request.resource.data.uid == uid
+          && request.resource.data.keys().hasOnly(['uid', 'username', 'name', 'avatar', 'role', 'lastMessage', 'lastFrom', 'updatedAt', 'unreadForSupport', 'unreadForUser', 'createdAt', 'endedAt', 'clearedAt'])
+          && (resource == null || request.resource.data.get('endedAt', null) == resource.data.get('endedAt', null))
+          && str(request.resource.data.get('lastMessage', ''), 200))
+        || (isAdmin() && request.resource.data.uid == uid);
+      allow delete: if false;
+      match /messages/{msgId} {
+        function okText(d) { return !('text' in d) || str(d.text, 4000); }
+        function okImg(d) { return !('image' in d) || (d.image is string && d.image.size() < 900000 && d.image.matches('^data:image/.*')); }
+        allow read: if (shineAccount() && me() == uid) || isAdmin();
+        allow create: if (shineAccount() && me() == uid
+            && request.resource.data.from == 'user' && request.resource.data.senderUid == me()
+            && request.resource.data.type in ['text', 'image', 'report']
+            && okText(request.resource.data) && okImg(request.resource.data)
+            && request.resource.data.keys().hasOnly(['from', 'senderUid', 'type', 'text', 'image', 'report', 'createdAt']))
+          || (isAdmin() && request.resource.data.from == 'support' && request.resource.data.senderUid == me()
+            && request.resource.data.type in ['text', 'image', 'request']
+            && okText(request.resource.data) && okImg(request.resource.data));
+        // The user answers a structured request card exactly once.
+        allow update: if shineAccount() && me() == uid && resource.data.type == 'request'
+          && resource.data.get('response', null) == null
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['response', 'respondedAt'])
+          && request.resource.data.response is map && request.resource.data.response.size() <= 10;
+        allow delete: if false;
+      }
+    }
+    /* SHINE_RULES_END */
+  }
+}
