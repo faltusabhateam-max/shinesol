@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { useSession } from "./providers";
 import { Avatar, Button, Logo } from "./ui";
 import { SI } from "./settings-ui";
+import { ReferralButton, ReferralTracker } from "./referral";
 import { ChatIcon, EventsIcon, HomeIcon, RegisterIcon, ReviewIcon, TasksIcon, WalletIcon } from "./icons";
 
 function Header() {
@@ -15,8 +16,10 @@ function Header() {
       <div className="glass-strong border-x-0 border-t-0">
         <div className="mx-auto flex h-16 max-w-3xl items-center justify-between px-4">
           <Link href="/" aria-label="Shine home"><Logo size={30} /></Link>
+          <div className="flex items-center gap-1.5 min-[360px]:gap-2">
+          <ReferralButton />
           {!ready ? <div className="skeleton h-9 w-9 rounded-full" /> : authenticated ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 min-[360px]:gap-2">
             <Link href="/settings" aria-label="Settings"><motion.span whileHover={{ rotate: 60 }} whileTap={{ scale: 0.9 }} className="grid h-9 w-9 place-items-center rounded-full text-white/70 hover:bg-white/10 hover:text-white">{SI.gear}</motion.span></Link>
             <Link href="/profile" aria-label="Your profile">
               <motion.div whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.94 }} className="rounded-full">
@@ -27,6 +30,7 @@ function Header() {
           ) : (
             <Button size="sm" onClick={login}>Sign in</Button>
           )}
+          </div>
         </div>
       </div>
     </header>
@@ -72,6 +76,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
   return (
     <>
       <Header />
+      <ReferralTracker />
       <main className={`mx-auto w-full max-w-3xl px-4 pt-20 ${immersive ? "pb-4" : "pb-32"}`}>{children}</main>
       {!immersive && <BottomNav />}
     </>

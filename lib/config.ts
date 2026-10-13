@@ -45,3 +45,17 @@ export const C = {
   prefs: "shine_prefs",
   verify: "shine_verify",
 } as const;
+/* ---------- Referral program ---------- */
+export const REF_TIERS = [
+  { id: "t50", at: 50, kind: "badge" as const, usd: 0, label: "Permanent Verified badge" },
+  { id: "t200", at: 200, kind: "usd" as const, usd: 100, label: "$100 in SOL" },
+  { id: "t500", at: 500, kind: "usd" as const, usd: 300, label: "$300 in SOL" },
+  { id: "t1000", at: 1000, kind: "usd" as const, usd: 500, label: "$500 in SOL" },
+];
+export type RefTierId = "t50" | "t200" | "t500" | "t1000";
+/** A referral is "daily active" when the referred user was active on at least REF_ACTIVE_DAYS of the last REF_WINDOW_DAYS days. */
+export const REF_ACTIVE_DAYS = 7;
+export const REF_WINDOW_DAYS = 14;
+/** A ref link can only be attached within this many hours of account creation. */
+export const REF_ATTACH_HOURS = 72;
+export type RefStatus = "locked" | "eligible" | "requested" | "review" | "approved" | "paid" | "rejected";
