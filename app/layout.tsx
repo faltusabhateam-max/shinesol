@@ -4,16 +4,18 @@ import "./globals.css";
 import Providers from "@/components/providers";
 import AppShell from "@/components/shell";
 import { SITE_URL } from "@/lib/config";
+import { SHUTDOWN, SHUTDOWN_MESSAGE } from "@/lib/shutdown";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["500", "600", "700", "800"], variable: "--font-montserrat", display: "swap" });
 const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], variable: "--font-poppins", display: "swap" });
 
-const title = "Shine — Web3 Jobs, Paid in $SOL";
-const description = "Discover Web3 opportunities and jobs, apply directly to projects, and get paid in SOL straight to your Shine Wallet. Powered by Solana.";
+const title = SHUTDOWN ? SHUTDOWN_MESSAGE : "Shine — Web3 Jobs, Paid in $SOL";
+const description = SHUTDOWN ? "Due to lack of funding, Shine has permanently shut down. Beware of anyone claiming to be Shine — it is a scam." : "Discover Web3 opportunities and jobs, apply directly to projects, and get paid in SOL straight to your Shine Wallet. Powered by Solana.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: title, template: "%s · Shine" },
+  title: SHUTDOWN ? { absolute: title } : { default: title, template: "%s · Shine" },
+  robots: SHUTDOWN ? { index: false, follow: false } : undefined,
   description,
   applicationName: "Shine",
   icons: { icon: [{ url: "/favicon.ico" }, { url: "/brand/star-192.png", type: "image/png", sizes: "192x192" }], apple: "/apple-touch-icon.png" },
@@ -37,7 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-aura min-h-dvh font-sans">
         <svg width="0" height="0" aria-hidden className="absolute"><defs><linearGradient id="shine-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ff5e8a" /><stop offset=".5" stopColor="#ff8a5c" /><stop offset="1" stopColor="#8e44ad" /></linearGradient></defs></svg>
         <Providers>
-          <AppShell>{children}</AppShell>
+          {SHUTDOWN ? children : <AppShell>{children}</AppShell>}
         </Providers>
       </body>
     </html>

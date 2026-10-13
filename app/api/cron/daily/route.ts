@@ -3,11 +3,13 @@ import { getDocData, queryDocs, setFields } from "@/lib/server-admin";
 import { chatSystem, savePlan } from "@/lib/server-escrow";
 import type { EscrowPlan } from "@/lib/escrow";
 import { json } from "@/lib/server-route";
+import { SHUTDOWN } from "@/lib/shutdown";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
 /** Daily Vercel cron: marks escrow periods due + prompts the project, and expires paid verifications. */
 export async function GET(req: NextRequest) {
+  if (SHUTDOWN) return json({ ok: true, skipped: "shutdown" });
   if (!process.env.CRON_SECRET || req.headers.get("authorization") !== `Bearer ${process.env.CRON_SECRET}`) return json({ error: "Unauthorized" }, 401);
   const now = Date.now();
   let due = 0, expired = 0;
