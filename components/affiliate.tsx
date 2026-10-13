@@ -17,9 +17,9 @@ export function VerifyPill({ uid }: { uid: string }) {
   const v = isVerified(uid);
   const until = paidUntil[uid];
   const cls = "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold ring-1";
-  if (!v) return <Link href="/verify"><motion.span whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.95 }} className={`${cls} bg-pink text-white ring-pink shadow-[0_0_20px_-6px_#ff2fa6]`}><VerifiedBadge force size={15} />Get Verified</motion.span></Link>;
+  if (!v) return <Link href="/verify"><motion.span whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.95 }} className={`${cls} grad text-white ring-pink shadow-[var(--raise-sm)]`}><VerifiedBadge force size={15} />Get Verified</motion.span></Link>;
   return (
-    <Link href="/verify"><span className={`${cls} bg-pink/10 text-pink ring-pink/40`}><VerifiedBadge force size={15} />
+    <Link href="/verify"><span className={`${cls} icon-grad neu-sm text-pink ring-pink/40`}><VerifiedBadge force size={15} />
       {official.has(uid) && !until ? "Verified by Shine" : <>You&apos;re verified{until && <span className="font-normal text-white/60"> · until {until.toLocaleDateString(undefined, { dateStyle: "medium" })}</span>}</>}
     </span></Link>
   );
@@ -78,7 +78,7 @@ export function AffiliateManager({ uid }: { uid: string }) {
   return (
     <Card className="mt-6 p-5">
       <div className="mb-1 flex items-center justify-between">
-        <h2 className="font-display text-lg font-semibold">Affiliates</h2>
+        <h2 className="font-display text-lg font-bold">Affiliates</h2>
         {st.enabled && <span className="text-xs text-white/50">{st.members.length}/{st.max}</span>}
       </div>
       {!st.enabled ? (

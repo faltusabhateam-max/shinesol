@@ -65,7 +65,7 @@ export const MentionInput = forwardRef<MentionInputHandle, { value: string; onCh
         <AnimatePresence>
           {sugg.length > 0 && (
             <motion.div initial={{ opacity: 0, y: 6, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 6 }}
-              className="glass-strong absolute bottom-full left-0 z-30 mb-2 w-72 max-w-full overflow-hidden rounded-2xl p-1.5 shadow-[0_20px_50px_-15px_rgba(255,47,166,.5)]">
+              className="glass-strong absolute bottom-full left-0 z-30 mb-2 w-72 max-w-full overflow-hidden rounded-2xl p-1.5 shadow-[var(--raise-sm)]">
               {sugg.map((u, i) => (
                 <button key={u.uid} type="button" onMouseDown={(e) => { e.preventDefault(); pick(u); }} onMouseEnter={() => setHi(i)}
                   className={`flex w-full items-center gap-2.5 rounded-xl p-2 text-left ${i === hi ? "bg-pink/15" : ""}`}>

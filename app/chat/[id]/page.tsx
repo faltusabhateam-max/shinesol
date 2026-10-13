@@ -55,11 +55,10 @@ function PaymentReceipt({ m, mine }: { m: Message; mine: boolean }) {
   }, [m.signature]);
   return (
     <motion.div initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} className="mx-auto my-3 w-full max-w-sm">
-      <div className="glass neon relative overflow-hidden rounded-3xl p-4 text-center">
-        <motion.div className="absolute -right-6 -top-6 h-24 w-24 rounded-full bg-pink/30 blur-2xl" animate={{ scale: [1, 1.3, 1] }} transition={{ repeat: Infinity, duration: 3 }} />
+      <div className="glass relative overflow-hidden rounded-3xl p-4 text-center">
         <div className="relative">
           <p className="flex items-center justify-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-pink"><img src="/brand/star-64.png" alt="" className="h-3.5 w-3.5" /> Official Shine receipt</p>
-          <p className="mt-2 font-display text-3xl font-semibold">{fmtSol(m.amount || 0)} SOL</p>
+          <p className="mt-2 font-display text-3xl font-bold">{fmtSol(m.amount || 0)} SOL</p>
           <p className="text-sm text-white/60">{mine ? "Payment sent" : "Payment received"} · {toDate(m.createdAt)?.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" }) || "just now"}</p>
           {m.wallet && <p className="mt-1 font-mono text-xs text-white/45">To {short(m.wallet, 6)}</p>}
           <a href={solscanTx(m.signature!)} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold hover:bg-white/15">View on Solscan {ICON.external}</a>
@@ -205,7 +204,7 @@ function Inner({ id }: { id: string }) {
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8" /><circle cx="12" cy="12" r="1.8" /><circle cx="19" cy="12" r="1.8" /></svg></button>
           <AnimatePresence>{hdrMenu && <>
             <div className="fixed inset-0 z-40" onClick={() => setHdrMenu(false)} />
-            <motion.div initial={{ opacity: 0, scale: 0.95, y: -4 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} className="absolute right-0 top-11 z-50 w-48 border border-white/10 bg-[#140a12]/95 backdrop-blur-xl overflow-hidden rounded-2xl p-1 shadow-xl">
+            <motion.div initial={{ opacity: 0, scale: 0.95, y: -4 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} className="absolute right-0 top-11 z-50 w-48 border border-white/10 bg-[#140a12]/95 overflow-hidden rounded-2xl p-1 shadow-xl">
               <button onClick={() => { setHdrMenu(false); openPay(); }} className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-pink hover:bg-white/5">{ICON.sol} Pay</button>
               <button onClick={() => { setHdrMenu(false); setEscrowOpen(true); }} className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-left text-sm hover:bg-white/5"><VaultIcon /> Auto-payment</button>
             </motion.div></>}</AnimatePresence>

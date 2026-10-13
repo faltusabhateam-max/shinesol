@@ -46,5 +46,5 @@ export function defaultTaskUrl(t: FieldType, author?: ShineUser | null) {
 
 export function TypeBadge({ type, size = 40 }: { type: FieldType; size?: number }) {
   const m = metaOf(type);
-  return <span className={`grid shrink-0 place-items-center rounded-2xl bg-gradient-to-br ring-1 ring-white/10 ${m.color}`} style={{ width: size, height: size }}>{m.icon}</span>;
+  return <span className={`grid shrink-0 place-items-center neu-sm rounded-[14px] icon-grad text-pink`} style={{ width: size, height: size }}>{m.icon}</span>;
 }

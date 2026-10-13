@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "@/components/providers";
 import { SignInGate } from "@/components/gate";
-import { Button, Card } from "@/components/ui";
+import { Button, Card, ProgressRing } from "@/components/ui";
 import { useToast } from "@/components/toast";
 import { ShareSheet } from "@/components/share-sheet";
 import { useApi } from "@/lib/client-api";
@@ -75,11 +75,10 @@ export default function ReferralPage() {
     <div className="space-y-5">
       {/* Hero */}
       <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass-strong relative overflow-hidden rounded-3xl p-5 sm:p-7">
-        <motion.div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-pink/30 blur-3xl" animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 6, repeat: Infinity }} />
         <div className="relative flex items-start gap-3">
-          <motion.div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-pink/15 text-pink ring-1 ring-pink/40 shadow-[0_0_30px_-8px_rgba(255,47,166,.9)]" animate={{ rotate: [0, -6, 6, 0] }} transition={{ duration: 3, repeat: Infinity }}><GiftIcon size={26} /></motion.div>
+          <motion.div className="icon-grad neu-sm grid h-12 w-12 shrink-0 place-items-center rounded-[16px] text-pink"><GiftIcon size={26} /></motion.div>
           <div className="min-w-0">
-            <h1 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">Referral program</h1>
+            <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">Referral program</h1>
             <p className="mt-1 text-sm text-white/60">Invite friends to Shine. Unlock a permanent Verified badge and up to <span className="text-pink">$900 in SOL</span>.</p>
           </div>
         </div>
@@ -93,11 +92,11 @@ export default function ReferralPage() {
           <Card className="p-4 sm:p-5">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/45">Your referral code</p>
             <div className="mt-1 flex flex-wrap items-center justify-between gap-2">
-              <p className="min-w-0 truncate font-display text-2xl font-semibold text-pink drop-shadow-[0_0_10px_rgba(255,47,166,.6)]">@{username}</p>
+              <p className="min-w-0 truncate font-display text-2xl font-bold grad-text">@{username}</p>
               {d?.referredBy && <span className="text-xs text-white/45">Referred by @{d.referredBy}</span>}
             </div>
             {[{ k: "link", v: link }, { k: "short", v: short }].map(({ k, v }) => (
-              <div key={k} className="mt-3 flex items-center gap-2 rounded-2xl border border-white/10 bg-black/40 p-1.5 pl-3">
+              <div key={k} className="mt-3 flex items-center gap-2 rounded-2xl bg-[#2a2a2d] shadow-[var(--inset)] p-1.5 pl-3">
                 <span className="min-w-0 flex-1 truncate text-[13px] text-white/75">{v.replace(/^https:\/\//, "")}</span>
                 <motion.button whileTap={{ scale: 0.9 }} type="button" onClick={() => copy(v, k)} aria-label="Copy link" className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/5 text-white/80 hover:bg-pink/20 hover:text-pink">
                   <AnimatePresence mode="wait" initial={false}>
@@ -116,25 +115,28 @@ export default function ReferralPage() {
           {/* Stats + progress */}
           <Card className="p-4 sm:p-5">
             {err && <p className="mb-3 rounded-xl bg-red-500/10 p-3 text-sm text-red-300">{err}</p>}
-            <div className="grid grid-cols-2 gap-2">
+            <div className="flex flex-col items-center gap-5 min-[420px]:flex-row">
+            <ProgressRing pct={pct}><p className="font-display text-3xl font-bold leading-none">{qualified}</p><p className="mt-1 text-[10px] uppercase tracking-[0.16em] text-white/50">of {max}</p></ProgressRing>
+            <div className="grid w-full flex-1 grid-cols-2 gap-3">
               {[{ l: "Total referrals", v: d?.total, I: UsersIcon }, { l: "Qualified", v: d?.qualified, I: CheckBadgeIcon }].map(({ l, v, I }, i) => (
-                <motion.div key={l} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }} className={`rounded-2xl border p-3 ${i ? "border-pink/30 bg-pink/10" : "border-white/10 bg-white/[.03]"}`}>
-                  <div className={`flex items-center gap-1.5 text-xs ${i ? "text-pink" : "text-white/55"}`}><I size={15} />{l}</div>
-                  <p className="mt-1 font-display text-3xl font-semibold">{v ?? <span className="skeleton inline-block h-7 w-10 rounded" />}</p>
+                <motion.div key={l} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }} className="neu-inset rounded-[18px] p-3.5">
+                  <div className={`flex items-center gap-1.5 text-xs ${i ? "icon-grad text-pink" : "text-white/55"}`}><I size={15} />{l}</div>
+                  <p className="mt-1 font-display text-3xl font-bold">{v ?? <span className="skeleton inline-block h-7 w-10 rounded" />}</p>
                 </motion.div>
               ))}
             </div>
-            <div className="mt-5">
+            </div>
+            <div className="mt-6">
               <div className="mb-2 flex items-center justify-between text-xs text-white/55">
                 <span>{next ? <>Next: <span className="text-white">{next.label}</span> at {next.at}</> : <span className="text-emerald-300">All milestones reached</span>}</span>
                 <span>{qualified}/{max}</span>
               </div>
-              <div className="relative h-3 rounded-full bg-white/[.06] ring-1 ring-white/10">
-                <motion.div className="absolute inset-y-0 left-0 overflow-hidden rounded-full bg-gradient-to-r from-pink/70 to-pink shadow-[0_0_16px_rgba(255,47,166,.8)]" initial={{ width: 0 }} animate={{ width: `${Math.max(pct, qualified ? 1.5 : 0)}%` }} transition={{ duration: 1.2, ease: "easeOut" }}>
-                  <motion.div className="absolute inset-y-0 w-10 bg-gradient-to-r from-transparent via-white/60 to-transparent" animate={{ x: ["-3rem", "40rem"] }} transition={{ duration: 2.4, repeat: Infinity }} />
+              <div className="relative h-3 rounded-full neu-inset">
+                <motion.div className="absolute inset-y-0 left-0 overflow-hidden rounded-full grad" initial={{ width: 0 }} animate={{ width: `${Math.max(pct, qualified ? 1.5 : 0)}%` }} transition={{ duration: 1.2, ease: "easeOut" }}>
+                  
                 </motion.div>
                 {REF_TIERS.map((t) => (
-                  <span key={t.id} className={`absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 ${qualified >= t.at ? "border-pink bg-pink shadow-[0_0_10px_rgba(255,47,166,.9)]" : "border-white/25 bg-[#0b0710]"}`} style={{ left: `${(t.at / max) * 100}%` }} />
+                  <span key={t.id} className={`absolute top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 ${qualified >= t.at ? "border-[#ff8a5c] bg-[#ff8a5c]" : "border-white/25 bg-[#2a2a2d]"}`} style={{ left: `${(t.at / max) * 100}%` }} />
                 ))}
               </div>
               <div className="relative mt-2 h-4 text-[10px] text-white/45">
@@ -145,7 +147,7 @@ export default function ReferralPage() {
 
           {/* Tiers */}
           <section>
-            <h2 className="mb-3 font-display text-lg font-semibold">Milestones</h2>
+            <h2 className="mb-3 font-display text-lg font-bold">Milestones</h2>
             <div className="grid gap-3 sm:grid-cols-2">
               {(d?.tiers || REF_TIERS.map((t) => ({ ...t, status: "locked" as RefStatus, claim: null }))).map((t, i) => {
                 const badge = t.kind === "badge";
@@ -153,10 +155,10 @@ export default function ReferralPage() {
                 const prog = Math.min(100, (qualified / t.at) * 100);
                 return (
                   <motion.div key={t.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }} whileHover={{ y: -2 }}
-                    className={`glass relative overflow-hidden rounded-3xl p-4 ${t.status === "approved" ? "ring-1 ring-pink/60 shadow-[0_0_30px_-10px_rgba(255,47,166,.9)]" : ""}`}>
+                    className={`glass relative overflow-hidden rounded-3xl p-4 ${t.status === "approved" ? "ring-1 ring-pink/60 shadow-[var(--raise-sm)]" : ""}`}>
                     <div className="flex flex-wrap items-start justify-between gap-2">
                       <div className="flex min-w-0 flex-1 items-center gap-2.5">
-                        <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-2xl ring-1 ${t.status === "locked" ? "bg-white/5 text-white/45 ring-white/10" : "bg-pink/15 text-pink ring-pink/40"}`}>{badge ? <CheckBadgeIcon /> : <CoinIcon />}</div>
+                        <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-2xl ring-1 ${t.status === "locked" ? "bg-white/5 text-white/45 ring-white/10" : "icon-grad neu-sm text-pink ring-pink/40"}`}>{badge ? <CheckBadgeIcon /> : <CoinIcon />}</div>
                         <div className="min-w-0">
                           <p className="font-semibold">{badge ? "Permanent Verified" : fmtUsd(t.usd)}</p>
                           <p className="text-xs text-white/50">{t.at} qualified referrals</p>
@@ -183,7 +185,7 @@ export default function ReferralPage() {
 
           {/* Referrals list */}
           <Card className="p-4 sm:p-5">
-            <h2 className="mb-3 font-display text-lg font-semibold">Your referrals</h2>
+            <h2 className="mb-3 font-display text-lg font-bold">Your referrals</h2>
             {!d ? <div className="skeleton h-16 rounded-2xl" /> : !d.referrals.length ? <p className="text-sm text-white/50">No referrals yet. Share your link to get started.</p> : (
               <ul className="divide-y divide-white/5">{d.referrals.map((r) => (
                 <li key={r.username + r.attachedAt} className="flex items-center justify-between gap-2 py-2.5">
@@ -202,10 +204,10 @@ export default function ReferralPage() {
 
       {/* How it works */}
       <section>
-        <h2 className="mb-3 font-display text-lg font-semibold">How it works</h2>
+        <h2 className="mb-3 font-display text-lg font-bold">How it works</h2>
         <ol className="grid gap-2.5">{STEPS.map(({ Icon, t, d: desc }, i) => (
           <motion.li key={t} initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="glass flex items-start gap-3 rounded-2xl p-3.5">
-            <div className="relative grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-pink/15 text-pink ring-1 ring-pink/40"><Icon /><span className="absolute -right-1.5 -top-1.5 grid h-5 w-5 place-items-center rounded-full bg-pink text-[10px] font-bold text-white">{i + 1}</span></div>
+            <div className="relative grid h-10 w-10 shrink-0 place-items-center rounded-xl icon-grad neu-sm text-pink"><Icon /><span className="absolute -right-1.5 -top-1.5 grid h-5 w-5 place-items-center rounded-full bg-pink text-[10px] font-bold text-white">{i + 1}</span></div>
             <div className="min-w-0"><p className="font-semibold">{t}</p><p className="text-sm text-white/55">{desc}</p></div>
           </motion.li>
         ))}</ol>
@@ -213,7 +215,7 @@ export default function ReferralPage() {
 
       {/* Rules & alerts */}
       <section className="glass relative overflow-hidden rounded-3xl border border-amber-400/20 p-4 sm:p-5">
-        <div className="mb-3 flex items-center gap-2 text-amber-300"><ShieldAlertIcon size={22} /><h2 className="font-display text-lg font-semibold text-white">Rules &amp; Alerts</h2></div>
+        <div className="mb-3 flex items-center gap-2 text-amber-300"><ShieldAlertIcon size={22} /><h2 className="font-display text-lg font-bold text-white">Rules &amp; Alerts</h2></div>
         <ul className="grid gap-2">{RULES.map((r, i) => (
           <motion.li key={r} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }} className="flex gap-2.5 text-sm text-white/70">
             <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-300 shadow-[0_0_8px_rgba(252,211,77,.8)]" />{r}

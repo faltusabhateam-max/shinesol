@@ -75,10 +75,10 @@ export default function TaskPage({ params }: { params: Promise<{ id: string }> }
         <div className="flex items-center gap-3"><Avatar avatar={t.creatorAvatar} size={44} />
           <div className="min-w-0 flex-1"><p className="flex min-w-0 items-center gap-1 font-semibold"><span className="truncate">{t.creatorName}</span><VerifiedBadge uid={t.creatorUid} /></p><p className="truncate text-sm text-white/45">@{t.creatorUsername}</p></div>
           <TaskStatus status={t.status} /></div>
-        <h1 className="mt-3 font-display text-2xl font-semibold leading-tight">{t.title}</h1>
+        <h1 className="mt-3 font-display text-2xl font-bold leading-tight">{t.title}</h1>
         <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-white/65">{t.description}</p>
         <div className="mt-4 flex items-end gap-3">
-          <div className="shrink-0 rounded-2xl bg-pink/12 px-3 py-2 ring-1 ring-pink/30"><p className="text-[10px] font-semibold uppercase tracking-wider text-pink-soft">You earn</p><p className="font-display text-xl font-semibold leading-none">{fmtUsd(t.rewardUsd)}</p><p className="text-[11px] text-white/50">{fmtSol(t.rewardLamports / LAMPORTS, 4)} SOL</p></div>
+          <div className="shrink-0 rounded-2xl bg-pink/12 px-3 py-2 ring-1 ring-pink/30"><p className="text-[10px] font-semibold uppercase tracking-wider text-pink-soft">You earn</p><p className="font-display text-xl font-bold leading-none">{fmtUsd(t.rewardUsd)}</p><p className="text-[11px] text-white/50">{fmtSol(t.rewardLamports / LAMPORTS, 4)} SOL</p></div>
           <div className="min-w-0 flex-1"><SlotsBar used={t.claimed} total={t.limit} /></div>
         </div>
         <div className="mt-3 flex justify-end"><button onClick={() => setShare(true)} className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm text-white/65 hover:bg-white/10"><LIcon name="share" size={16} animate={false} /> Share</button></div>

@@ -39,7 +39,7 @@ export function BioEditor({ value, onChange, max = 1200 }: { value: string; onCh
     requestAnimationFrame(() => { el.focus(); el.setSelectionRange(a + l.length, a + l.length + sel.length); });
   };
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[.04] focus-within:border-pink/70 focus-within:shadow-[0_0_0_4px_rgba(255,47,166,.15)]">
+    <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[.04] focus-within:border-pink/70 focus-within:shadow-[var(--raise-sm)]">
       <div className="flex items-center gap-1 border-b border-white/10 px-2 py-1.5">
         <button type="button" onClick={() => wrap("**", "**", "bold text")} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold text-white/80 hover:bg-white/10"> {ICON.bold} Bold</button>
         <button type="button" onClick={() => wrap("[[", "]]", "Tag")} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-semibold text-white/80 hover:bg-white/10"> {ICON.tag} Tag</button>

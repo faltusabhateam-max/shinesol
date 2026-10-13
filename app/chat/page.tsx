@@ -33,8 +33,7 @@ function Inner() {
     <>
       <PageTitle sub="Private conversations unlock when an application is approved.">Chat</PageTitle>
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
-        <Link href="/chat/support" className="glass neon relative flex items-center gap-3 overflow-hidden rounded-2xl border-pink/30 p-3 hover:border-pink/60">
-          <motion.div className="pointer-events-none absolute -left-10 top-0 h-full w-24 bg-gradient-to-r from-transparent via-pink/15 to-transparent" animate={{ x: ["0%", "600%"] }} transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut", repeatDelay: 2 }} />
+        <Link href="/chat/support" className="glass relative flex items-center gap-3 overflow-hidden rounded-2xl border-pink/30 p-3 hover:border-pink/60">
           <SupportAvatar size={48} />
           <div className="relative min-w-0 flex-1">
             <div className="flex items-baseline justify-between gap-2">
@@ -43,7 +42,7 @@ function Inner() {
             </div>
             <p className={`truncate text-sm ${unread ? "font-semibold text-white" : "text-white/55"}`}>{support?.lastMessage ? `${support.lastFrom === "support" ? "Support: " : "You: "}${support.lastMessage}` : "Get help or report a scam — we're here for you."}</p>
           </div>
-          {unread && <motion.span className="relative h-2.5 w-2.5 rounded-full bg-pink shadow-[0_0_10px_rgba(255,47,166,.9)]" animate={{ scale: [1, 1.3, 1] }} transition={{ repeat: Infinity, duration: 1.4 }} />}
+          {unread && <motion.span className="relative h-2.5 w-2.5 rounded-full bg-pink shadow-[var(--raise-sm)]" />}
         </Link>
       </motion.div>
       {!chats.length ? (

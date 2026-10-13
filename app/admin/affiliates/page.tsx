@@ -21,7 +21,7 @@ export default function AdminAffiliates() {
   const run = async (body: Record<string, any>, ok: string) => { try { await action(body); toast(ok, "ok"); } catch (e: any) { toast(e.message, "err"); } };
   return (
     <div>
-      <h1 className="mb-1 font-display text-2xl font-semibold">Affiliates</h1>
+      <h1 className="mb-1 font-display text-2xl font-bold">Affiliates</h1>
       <p className="mb-5 text-sm text-white/50">Projects that unlocked affiliate distribution. Badges show only while the project&apos;s Verified plan is active.</p>
       {!rows ? <p className="text-white/50">Loading…</p> : !rows.length ? <p className="glass rounded-2xl p-6 text-center text-white/50">No affiliate programs yet.</p> : (
         <div className="grid gap-3">{rows.map((a, i) => (

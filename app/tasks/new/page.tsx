@@ -88,7 +88,7 @@ export default function NewTask() {
   return (
     <div className="pb-32">
       <BackLink href="/tasks" label="Tasks" />
-      <h1 className="mt-3 font-display text-3xl font-semibold">Create a task</h1>
+      <h1 className="mt-3 font-display text-3xl font-bold">Create a task</h1>
       <p className="mt-1 text-sm text-white/55">Reward people for joining, following and sharing. Fund once, the Shine team reviews every claim.</p>
 
       <div className="glass mt-5 space-y-3 rounded-3xl p-4">
@@ -144,11 +144,11 @@ export default function NewTask() {
         {intent && <div className="space-y-4 pb-4">
           <div className="rounded-3xl bg-pink/10 p-4 text-center ring-1 ring-pink/30">
             <p className="text-xs uppercase tracking-wider text-pink-soft">Deposit to the Shine Vault</p>
-            <p className="mt-1 font-display text-3xl font-semibold">{fmtSol(intent.sol, 6)} SOL</p>
+            <p className="mt-1 font-display text-3xl font-bold">{fmtSol(intent.sol, 6)} SOL</p>
             <p className="text-sm text-white/55">≈ {fmtUsd(intent.usd)} at ${intent.price.toFixed(2)}/SOL</p>
           </div>
           <div className="flex rounded-2xl bg-white/5 p-1 text-sm font-semibold">
-            {(["shine", "external"] as const).map((m) => <button key={m} onClick={() => (m === "external" ? external() : setMethod("shine"))} className={`flex-1 rounded-xl py-2 ${method === m ? "bg-pink text-white" : "text-white/60"}`}>{m === "shine" ? "Shine Wallet" : "External wallet"}</button>)}
+            {(["shine", "external"] as const).map((m) => <button key={m} onClick={() => (m === "external" ? external() : setMethod("shine"))} className={`flex-1 rounded-xl py-2 ${method === m ? "grad text-white" : "text-white/60"}`}>{m === "shine" ? "Shine Wallet" : "External wallet"}</button>)}
           </div>
           {method === "shine" ? <Button size="lg" className="w-full" loading={busy} onClick={payShine}>Pay {fmtSol(intent.sol, 4)} SOL</Button> : <>
             <div className="mx-auto w-fit rounded-3xl bg-white p-3"><QRCodeSVG value={intent.url} size={190} /></div>

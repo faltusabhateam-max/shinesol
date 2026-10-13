@@ -10,8 +10,8 @@ export function SignInGate({ text = "Sign in with your email to create your Shin
   const { login } = useSession();
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass mx-auto mt-6 max-w-md rounded-[2rem] p-8 text-center">
-      <motion.img src="/brand/star.png" alt="" className="mx-auto h-20 w-20 drop-shadow-[0_0_24px_rgba(255,47,166,.8)]" animate={{ rotate: [0, 8, -8, 0], scale: [1, 1.05, 1] }} transition={{ duration: 4, repeat: Infinity }} />
-      <h2 className="mt-5 font-display text-2xl font-semibold">Welcome to Shine</h2>
+      <motion.img src="/brand/star.png" alt="" className="mx-auto h-20 w-20" />
+      <h2 className="mt-5 font-display text-2xl font-bold">Welcome to Shine</h2>
       <p className="mt-2 text-sm text-white/60">{text}</p>
       <Button size="lg" className="mt-6 w-full" onClick={login}>Sign in or sign up</Button>
       <p className="mt-3 text-xs text-white/40">A Solana wallet is created for you automatically. Shine never holds your private key.</p>
@@ -25,12 +25,11 @@ export function DeactivatedScreen() {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="glass mx-auto mt-6 max-w-md rounded-[2rem] p-8 text-center">
       <div className="relative mx-auto h-20 w-20">
-        <motion.span className="absolute inset-0 rounded-full bg-red-500/25 blur-xl" animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 2.4 }} />
         <div className="relative grid h-20 w-20 place-items-center rounded-full border border-red-400/40 bg-red-500/10 text-red-300">
           <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><circle cx="12" cy="12" r="9" /><path d="M5.6 5.6l12.8 12.8" /></svg>
         </div>
       </div>
-      <h2 className="mt-5 font-display text-2xl font-semibold">Account deactivated</h2>
+      <h2 className="mt-5 font-display text-2xl font-bold">Account deactivated</h2>
       <p className="mt-2 text-sm leading-relaxed text-white/60">Your Shine account has been deactivated by our moderation team. You can't post, apply or chat while it's deactivated. If you believe this is a mistake, contact Shine Support.</p>
       <Link href="/chat/support"><Button size="lg" className="mt-6 w-full">Contact Shine Support</Button></Link>
       <button onClick={() => logout()} className="mt-3 text-sm text-white/50 hover:text-white">Sign out</button>
@@ -50,7 +49,7 @@ export function SessionGate({ children, needProfile = true, text, allowDeactivat
   if (needProfile && !s.profile)
     return (
       <Card className="mx-auto mt-6 max-w-md p-8 text-center">
-        <h2 className="font-display text-xl font-semibold">Complete your profile first</h2>
+        <h2 className="font-display text-xl font-bold">Complete your profile first</h2>
         <p className="mt-2 text-sm text-white/60">Set up your Shine profile to apply, chat and get paid.</p>
         <Link href="/profile"><Button className="mt-5 w-full">Set up profile</Button></Link>
       </Card>

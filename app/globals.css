@@ -1,59 +1,83 @@
 @import "tailwindcss";
 
 @theme {
-  --color-pink: #ff2fa6;
-  --color-pink-soft: #ff6cc4;
-  --color-ink: #050307;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-poppins), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --color-pink: #ff5e8a;
+  --color-pink-soft: #ffa3b8;
+  --color-orange: #ff8a5c;
+  --color-plum: #8e44ad;
+  --color-ink: #2b2b2e;
+  --color-surface: #303033;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-montserrat), var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
 
-:root { color-scheme: dark; }
-html, body { background: #050307; color: #fff; }
-body { -webkit-font-smoothing: antialiased; overscroll-behavior-y: none; }
+/* ---------- Shine · dark neumorphism ---------- */
+:root {
+  color-scheme: dark;
+  --bg: #2b2b2e;
+  --surface: #2f2f32;
+  --sh-dark: rgba(14, 14, 16, 0.62);
+  --sh-light: rgba(70, 70, 76, 0.38);
+  --grad: linear-gradient(135deg, #ff5e8a 0%, #ff8a5c 48%, #8e44ad 100%);
+  --raise: 7px 7px 16px var(--sh-dark), -5px -5px 13px var(--sh-light);
+  --raise-sm: 4px 4px 9px var(--sh-dark), -3px -3px 7px var(--sh-light);
+  --inset: inset 3px 3px 7px var(--sh-dark), inset -3px -3px 7px var(--sh-light);
+}
+html, body { background: var(--bg); color: #ececef; }
+body { -webkit-font-smoothing: antialiased; overscroll-behavior-y: none; overflow-x: hidden; font-weight: 400; }
 * { -webkit-tap-highlight-color: transparent; }
+h1, h2, h3, .font-display { letter-spacing: -0.01em; }
+::selection { background: rgba(255, 94, 138, .35); }
 
-.bg-aura {
-  background:
-    radial-gradient(60rem 40rem at 85% -10%, rgba(255, 47, 166, 0.16), transparent 60%),
-    radial-gradient(50rem 40rem at -10% 110%, rgba(140, 40, 255, 0.12), transparent 60%),
-    #050307;
-}
-.glass {
-  background: linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.03));
-  border: 1px solid rgba(255,255,255,0.09);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+/* Unified thin outline icon weight across the app */
+svg[stroke="currentColor"]:not([data-keep-stroke]) { stroke-width: 1.6; }
+
+.bg-aura { background: var(--bg); }
+
+/* Raised neumorphic surface (legacy class names kept so every page restyles) */
+.glass, .neu {
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.025);
+  box-shadow: var(--raise);
 }
 .glass-strong {
-  background: linear-gradient(180deg, rgba(28,14,26,0.82), rgba(12,6,12,0.78));
-  border: 1px solid rgba(255,255,255,0.1);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  background: #2d2d30;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: 10px 10px 24px rgba(10, 10, 12, .7), -6px -6px 16px rgba(66, 66, 72, .32);
 }
-.neon { box-shadow: 0 0 0 1px rgba(255,47,166,.5), 0 8px 30px -6px rgba(255,47,166,.55); }
-.text-glow { text-shadow: 0 0 24px rgba(255,47,166,.55); }
-.btn-pink {
-  background: linear-gradient(135deg, #ff2fa6, #ff5cbf 60%, #ff2fa6);
-  box-shadow: 0 10px 30px -10px rgba(255,47,166,.8), inset 0 1px 0 rgba(255,255,255,.35);
+.neu-sm { background: var(--surface); box-shadow: var(--raise-sm); }
+.neu-inset { background: #2a2a2d; box-shadow: var(--inset); }
+.neon { box-shadow: var(--raise); }
+.text-glow { text-shadow: none; }
+.grad, .btn-pink {
+  background: var(--grad);
+  box-shadow: 5px 6px 14px rgba(10, 10, 12, .55), -3px -3px 9px rgba(70, 70, 76, .3), inset 0 1px 0 rgba(255, 255, 255, .18);
 }
+.grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.icon-grad svg[stroke] { stroke: url(#shine-grad); }
+.icon-grad svg[fill="currentColor"] { fill: url(#shine-grad); }
+.dot-grad { background: var(--grad); }
+
 .input {
   width: 100%;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-  padding: 0.75rem 0.95rem;
+  border-radius: 16px;
+  background: #2a2a2d;
+  border: 1px solid transparent;
+  box-shadow: var(--inset);
+  padding: 0.8rem 1rem;
   font-size: 0.95rem;
-  color: #fff;
+  color: #f2f2f4;
   outline: none;
-  transition: border-color .2s, box-shadow .2s, background .2s;
+  transition: border-color .2s, box-shadow .2s;
 }
-.input::placeholder { color: rgba(255,255,255,0.35); }
-.input:focus { border-color: rgba(255,47,166,.7); box-shadow: 0 0 0 4px rgba(255,47,166,.15); background: rgba(255,255,255,0.06); }
-.label { display:block; font-size: .78rem; font-weight: 600; letter-spacing: .02em; color: rgba(255,255,255,.7); margin-bottom: .4rem; }
-.chip { display:inline-flex; align-items:center; border-radius:999px; padding: .1rem .6rem; font-size:.8rem; font-weight:600; color:#ffd1ea; background: rgba(255,47,166,.16); border:1px solid rgba(255,47,166,.4); margin: .1rem .1rem; }
+.input::placeholder { color: rgba(255,255,255,0.38); }
+.input:focus { border-color: rgba(255, 94, 138, .45); }
+.label { display:block; font-size: .74rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.62); margin-bottom: .45rem; }
+.chip { display:inline-flex; align-items:center; border-radius:999px; padding: .12rem .65rem; font-size:.8rem; font-weight:600; color:#ffb0c2; background:#2a2a2d; box-shadow: var(--inset); margin: .1rem .1rem; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 .safe-bottom { padding-bottom: max(env(safe-area-inset-bottom), 12px); }
 @keyframes shimmer { 0% { background-position: -400px 0 } 100% { background-position: 400px 0 } }
-.skeleton { background: linear-gradient(90deg, rgba(255,255,255,.04) 0%, rgba(255,255,255,.09) 50%, rgba(255,255,255,.04) 100%); background-size: 800px 100%; animation: shimmer 1.4s infinite linear; }
+.skeleton { background: linear-gradient(90deg, #303033 0%, #38383c 50%, #303033 100%); background-size: 800px 100%; animation: shimmer 1.4s infinite linear; }
+:focus-visible { outline: 2px solid #ff8a5c; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }

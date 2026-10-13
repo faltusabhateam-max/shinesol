@@ -190,7 +190,7 @@ export default function Providers({ children }: { children: ReactNode }) {
         loginMethods: ["email"],
         appearance: {
           theme: "dark",
-          accentColor: "#ff2fa6",
+          accentColor: "#ff5e8a",
           logo: `${SITE_URL}/brand/star-192.png`,
           landingHeader: "Welcome to Shine",
           loginMessage: "Sign in or create your account with email.",

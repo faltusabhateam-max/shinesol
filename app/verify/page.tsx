@@ -90,34 +90,33 @@ export default function VerifyPage() {
   return (
     <div className="mx-auto max-w-2xl">
       <BackLink href="/settings" label="Settings" />
-      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass neon relative mb-5 overflow-hidden rounded-[2rem] p-6 text-center">
-        <motion.div className="pointer-events-none absolute left-1/2 top-0 h-56 w-56 -translate-x-1/2 rounded-full bg-pink/30 blur-3xl" animate={{ scale: [1, 1.2, 1], opacity: [0.6, 1, 0.6] }} transition={{ repeat: Infinity, duration: 4 }} />
-        <motion.div className="relative mx-auto mb-3 w-fit" animate={{ rotate: [0, 6, -6, 0], y: [0, -4, 0] }} transition={{ repeat: Infinity, duration: 4 }}><VerifiedBadge force size={72} /></motion.div>
-        <h1 className="relative font-display text-3xl font-semibold tracking-tight sm:text-4xl">Shine Verified</h1>
+      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass relative mb-5 overflow-hidden rounded-[2rem] p-6 text-center">
+        <motion.div className="relative mx-auto mb-3 w-fit"><VerifiedBadge force size={72} /></motion.div>
+        <h1 className="relative font-display text-3xl font-bold tracking-tight sm:text-4xl">Shine Verified</h1>
         <p className="relative mx-auto mt-2 max-w-md text-white/65">Stand out to projects, message them directly and get seen first — with the pink seal of trust.</p>
         {v && <p className="relative mt-3 inline-flex rounded-full bg-pink/15 px-3 py-1 text-sm font-semibold text-pink ring-1 ring-pink/40">{until ? `Active until ${until.toLocaleDateString(undefined, { dateStyle: "medium" })} · extend below` : "Verified by the Shine team"}</p>}
       </motion.section>
 
-      <h2 className="mb-3 px-1 font-display text-xl font-semibold">What you get</h2>
+      <h2 className="mb-3 px-1 font-display text-xl font-bold">What you get</h2>
       <div className="mb-6 grid gap-2.5 sm:grid-cols-2">
         {BENEFITS.map((b, i) => (
           <motion.div key={b.t} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (i % 4) * 0.05 }} className="glass flex gap-3 rounded-2xl p-3.5">
-            <motion.span whileHover={{ rotate: -10, scale: 1.1 }} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-pink/15 text-pink ring-1 ring-pink/30">{b.i}</motion.span>
+            <motion.span whileHover={{ rotate: -10, scale: 1.1 }} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl icon-grad neu-sm text-pink">{b.i}</motion.span>
             <div><p className="font-semibold">{b.t}</p><p className="text-sm leading-snug text-white/55">{b.d}</p></div>
           </motion.div>
         ))}
       </div>
 
-      <h2 className="mb-3 px-1 font-display text-xl font-semibold">Choose your plan</h2>
+      <h2 className="mb-3 px-1 font-display text-xl font-bold">Choose your plan</h2>
       <div className="mb-4 grid grid-cols-3 gap-2">
         {VERIFY_PLANS.map((p) => (
-          <motion.button key={p.id} whileTap={{ scale: 0.97 }} onClick={() => setPlan(p.id)} className={`relative rounded-3xl border p-3.5 text-left transition ${plan === p.id ? "border-pink/70 bg-pink/[.1] shadow-[0_0_30px_-10px_#ff2fa6]" : "border-white/10 bg-white/[.03]"}`}>
+          <motion.button key={p.id} whileTap={{ scale: 0.97 }} onClick={() => setPlan(p.id)} className={`relative rounded-3xl border p-3.5 text-left transition ${plan === p.id ? "border-pink/70 bg-pink/[.1] shadow-[var(--raise-sm)]" : "border-white/10 bg-white/[.03]"}`}>
             {"tag" in p && p.tag && <span className="absolute -top-2.5 right-2 rounded-full bg-pink px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">{p.tag}</span>}
             <p className="text-xs text-white/55">{p.label}</p>
-            <p className="font-display text-2xl font-semibold">${p.usd}</p>
+            <p className="font-display text-2xl font-bold">${p.usd}</p>
             <p className="text-[11px] text-white/45">{price ? `≈ ${fmtSol(p.usd / price, 3)} SOL` : "…"}</p>
             <p className="mt-1 text-[11px] text-white/40">${(p.usd / p.months).toFixed(2)}/mo</p>
-            {plan === p.id && <motion.span layoutId="plan-dot" className="absolute bottom-3 right-3 h-2.5 w-2.5 rounded-full bg-pink shadow-[0_0_10px_#ff2fa6]" />}
+            {plan === p.id && <motion.span layoutId="plan-dot" className="absolute bottom-3 right-3 h-2.5 w-2.5 rounded-full bg-pink shadow-[var(--raise-sm)]" />}
           </motion.button>
         ))}
       </div>
@@ -130,11 +129,11 @@ export default function VerifyPage() {
       <BottomSheet open={method === "external" && !!intent} onClose={() => { setMethod(null); if (poll.current) clearInterval(poll.current); }} title="Pay with an external wallet">
         {intent && (
           <div className="space-y-4 pb-4">
-            <div className="mx-auto w-fit rounded-3xl bg-white p-3 shadow-[0_0_40px_-8px_rgba(255,47,166,.6)]">
+            <div className="mx-auto w-fit rounded-3xl bg-white p-3 shadow-[var(--raise-sm)]">
               <QRCodeSVG value={intent.url} size={200} level="H" imageSettings={{ src: "/brand/star-192.png", height: 44, width: 44, excavate: true }} />
             </div>
-            <div className="text-center"><p className="font-display text-2xl font-semibold">{fmtSol(intent.sol, 6)} SOL</p><p className="text-xs text-white/50">≈ {fmtUsd(intent.usd)} · Solana Pay · {sel.label}</p></div>
-            <AnimatePresence><motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center justify-center gap-2 text-xs text-white/55"><motion.span className="h-2 w-2 rounded-full bg-pink" animate={{ opacity: [1, 0.2, 1] }} transition={{ repeat: Infinity, duration: 1.2 }} />Waiting for payment… scan with any Solana wallet</motion.p></AnimatePresence>
+            <div className="text-center"><p className="font-display text-2xl font-bold">{fmtSol(intent.sol, 6)} SOL</p><p className="text-xs text-white/50">≈ {fmtUsd(intent.usd)} · Solana Pay · {sel.label}</p></div>
+            <AnimatePresence><motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center justify-center gap-2 text-xs text-white/55"><motion.span className="h-2 w-2 rounded-full bg-pink" />Waiting for payment… scan with any Solana wallet</motion.p></AnimatePresence>
             <a href={intent.url} className="block"><Button variant="glass" className="w-full">Open in wallet app</Button></a>
             <ExternalWalletProvider>
               <ExternalPay recipient={intent.recipient} lamports={intent.lamports} reference={intent.reference} label={`Pay ${fmtSol(intent.sol, 4)} SOL`} onSent={(sig) => { toast("Payment sent — confirming…", "ok"); setTimeout(() => check(intent.reference, sig).catch(() => {}), 2500); }} />

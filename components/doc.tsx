@@ -3,7 +3,7 @@ export function DocHeader({ kicker, title, sub }: { kicker: string; title: strin
   return (
     <header className="mb-8 pt-2">
       <p className="text-xs font-semibold uppercase tracking-[.2em] text-pink">{kicker}</p>
-      <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">{title}</h1>
+      <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl">{title}</h1>
       {sub && <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-white/60">{sub}</p>}
     </header>
   );

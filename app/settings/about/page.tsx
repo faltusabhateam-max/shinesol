@@ -25,11 +25,11 @@ export default function About() {
             <source src="/media/how-it-works.webm" type="video/webm" />
             <source src="/media/how-it-works.mp4" type="video/mp4" />
           </video>
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent via-[#050307]/70 to-[#050307]" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 backdrop-blur-[3px] [mask-image:linear-gradient(to_bottom,transparent,black)]" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent via-[#2b2b2e]/70 to-[#2b2b2e]" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3-[3px] [mask-image:linear-gradient(to_bottom,transparent,black)]" />
         </div>
         <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }}
-          className="relative -mt-12 px-5 font-display text-5xl font-semibold tracking-tight text-glow sm:-mt-16 sm:text-6xl">
+          className="relative -mt-12 px-5 font-display text-5xl font-bold tracking-tight text-glow sm:-mt-16 sm:text-6xl">
           About Shine
         </motion.h1>
       </section>
@@ -49,23 +49,23 @@ export default function About() {
 
         <section className="mt-10">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-pink">Introducing Shine</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold leading-tight sm:text-3xl">Where Creators and Projects Connect, On-Chain.</h2>
+          <h2 className="mt-2 font-display text-2xl font-bold leading-tight sm:text-3xl">Where Creators and Projects Connect, On-Chain.</h2>
           <p className="mt-3 text-white/65">Shine is a platform built to connect talented creators with projects while making payments more transparent, secure, and accountable.</p>
           <p className="mt-2 font-semibold text-white/85">Everything runs on Solana. Everything is on-chain.</p>
-          <h3 className="mt-8 font-display text-lg font-semibold">Here&apos;s how Shine works</h3>
+          <h3 className="mt-8 font-display text-lg font-bold">Here&apos;s how Shine works</h3>
           <ol className="mt-4 grid gap-3">
             {STEPS.map((p, i) => (
               <motion.li key={p.t} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-40px" }} transition={{ delay: i * 0.06 }}
                 className="glass flex gap-4 rounded-3xl p-5">
                 <div className="relative shrink-0"><IconTile name={p.icon} />
                   <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-pink text-[11px] font-bold text-black">{i + 1}</span></div>
-                <div className="min-w-0"><h4 className="font-display font-semibold">{i + 1}. {p.t}</h4>
+                <div className="min-w-0"><h4 className="font-display font-bold">{i + 1}. {p.t}</h4>
                   <p className="mt-1 text-sm leading-relaxed text-white/60">{p.d}</p></div>
               </motion.li>
             ))}
           </ol>
           <div className="glass mt-8 rounded-3xl border-pink/30 p-6">
-            <div className="flex items-center gap-3"><IconTile name="spark" /><h3 className="font-display text-xl font-semibold">Why Shine?</h3></div>
+            <div className="flex items-center gap-3"><IconTile name="spark" /><h3 className="font-display text-xl font-bold">Why Shine?</h3></div>
             <p className="mt-3 text-white/75">Projects deserve quality work. Creators deserve fair payment.</p>
             <p className="mt-2 text-sm leading-relaxed text-white/60">Shine is designed to protect both sides through on-chain payment handling, transparent rules, and a structured dispute process.</p>
             <ul className="mt-3 space-y-1.5 text-sm text-white/70">
@@ -75,7 +75,7 @@ export default function About() {
             </ul>
             <p className="mt-4 text-sm text-white/60">Shine is building a better creator economy on Solana.</p>
           </div>
-          <p className="mt-8 text-center font-display text-xl font-semibold text-glow">Connect. Collaborate. Get paid.</p>
+          <p className="mt-8 text-center font-display text-xl font-bold text-glow">Connect. Collaborate. Get paid.</p>
           <p className="mt-1 text-center text-white/60">All powered by Shine.</p>
           <div className="mt-6 flex flex-wrap justify-center gap-3 text-sm">
             <Link href="/fees" className="text-pink hover:underline">Fees</Link><Link href="/terms" className="text-pink hover:underline">Terms</Link>

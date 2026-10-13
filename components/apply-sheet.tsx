@@ -81,7 +81,6 @@ export function ApplySheet({ post, open, onClose, onDone }: { post: Post; open: 
         ) : profile && (
           <div className="space-y-4 pb-3">
             <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={`relative overflow-hidden rounded-3xl border p-4 ${verified ? "border-pink/50 bg-pink/[.07]" : "border-white/10 bg-white/[.03]"}`}>
-              <motion.div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-pink/25 blur-3xl" animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 3.5 }} />
               <p className="relative mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-pink">Attached automatically</p>
               <div className="relative flex items-center gap-3">
                 <Avatar avatar={profile.avatar} size={48} ring />

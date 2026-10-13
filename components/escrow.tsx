@@ -59,7 +59,7 @@ export function EscrowBanner({ plan, amProject, onOpen }: { plan: EscrowPlan | n
   return (
     <motion.button type="button" onClick={onOpen} initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }}
       className={`mb-3 flex w-full items-center gap-3 rounded-2xl border px-3.5 py-2.5 text-left ${tone}`}>
-      <motion.span animate={{ scale: [1, 1.08, 1] }} transition={{ repeat: Infinity, duration: 2.4 }} className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/10">{icon}</motion.span>
+      <motion.span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/10">{icon}</motion.span>
       <span className="min-w-0 flex-1"><span className="block text-[13.5px] font-semibold leading-snug">{title}</span><span className="block truncate text-xs opacity-70">{sub}</span></span>
       {cta && <span className="shrink-0 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold">{cta}</span>}
     </motion.button>
@@ -67,7 +67,7 @@ export function EscrowBanner({ plan, amProject, onOpen }: { plan: EscrowPlan | n
 }
 
 export const DisputeIcon = () => (
-  <motion.svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" animate={{ rotate: [0, -8, 8, 0] }} transition={{ repeat: Infinity, duration: 2.4, repeatDelay: 1.5 }}>
+  <motion.svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 3v18M5 7h14M7 7l-3 7a3 3 0 0 0 6 0zM17 7l-3 7a3 3 0 0 0 6 0z" />
   </motion.svg>
 );
@@ -137,12 +137,11 @@ export function EscrowSheet({ open, onClose, plan, chatId, amProject, creatorNam
       <BottomSheet open={open && !reason && !consent} onClose={onClose} title="Auto-payment">
         <div className="space-y-4 pb-3">
           <div className="glass relative overflow-hidden rounded-3xl p-4">
-            <motion.div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-pink/25 blur-3xl" animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 4 }} />
             <div className="relative flex items-center gap-3">
-              <span className="grid h-11 w-11 place-items-center rounded-2xl bg-pink/15 text-pink ring-1 ring-pink/30"><VaultIcon s={22} /></span>
+              <span className="grid h-11 w-11 place-items-center rounded-2xl icon-grad neu-sm text-pink"><VaultIcon s={22} /></span>
               <div className="min-w-0 flex-1">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-pink">Shine vault escrow</p>
-                <p className="font-display text-xl font-semibold">{plan ? `${fmtUsd(plan.usd)} / ${plan.freq === "weekly" ? "week" : "month"}` : "Not set up"}</p>
+                <p className="font-display text-xl font-bold">{plan ? `${fmtUsd(plan.usd)} / ${plan.freq === "weekly" ? "week" : "month"}` : "Not set up"}</p>
               </div>
               {plan && <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold uppercase ring-1 ${plan.status === "active" ? "bg-emerald-400/10 text-emerald-200 ring-emerald-300/30" : plan.status === "off" ? "bg-white/10 text-white/60 ring-white/20" : "bg-amber-400/10 text-amber-200 ring-amber-300/30"}`}>{plan.status === "active" ? "On" : plan.status === "off" ? "Off" : "Not funded"}</span>}
             </div>
@@ -163,7 +162,7 @@ export function EscrowSheet({ open, onClose, plan, chatId, amProject, creatorNam
                 {(["weekly", "monthly"] as const).map((f) => (
                   <button key={f} type="button" onClick={() => setFreq(f)} className={`relative rounded-2xl border p-3 text-left transition ${freq === f ? "border-pink/60 bg-pink/10" : "border-white/10 bg-white/[.03]"}`}>
                     <span className="block font-semibold">{f === "weekly" ? "Weekly" : "Monthly"}</span><span className="text-xs text-white/50">Every {f === "weekly" ? "7" : "30"} days</span>
-                    {freq === f && <motion.span layoutId="freq" className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-pink shadow-[0_0_12px_#ff2fa6]" />}
+                    {freq === f && <motion.span layoutId="freq" className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-pink shadow-[var(--raise-sm)]" />}
                   </button>
                 ))}
               </div>
@@ -229,7 +228,7 @@ export function EscrowSheet({ open, onClose, plan, chatId, amProject, creatorNam
             {evidence.map((e, i) => <div key={i} className="relative h-16 w-16 overflow-hidden rounded-xl ring-1 ring-white/15"><img src={e} alt="" className="h-full w-full object-cover" /><button type="button" onClick={() => setEvidence((x) => x.filter((_, j) => j !== i))} className="absolute right-0.5 top-0.5 rounded-full bg-black/70 px-1 text-[10px]">✕</button></div>)}
             {evidence.length < 3 && <label className="grid h-16 w-16 cursor-pointer place-items-center rounded-xl border border-dashed border-white/20 text-xs text-white/50 hover:border-pink/50">+ Proof<input type="file" accept="image/*" hidden onChange={async (e) => { const f = e.target.files?.[0]; e.target.value = ""; if (!f) return; try { const { dataUrl } = await fileToDataUrl(f, 1000, 240_000); setEvidence((x) => [...x, dataUrl]); } catch { toast("Couldn't read that image", "err"); } }} /></label>}
           </div>
-          <label className="flex items-start gap-2 rounded-2xl bg-white/[.04] p-3 text-xs text-white/65"><input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} className="mt-0.5 accent-[#ff2fa6]" />I allow the Shine team to review this chat's records and my evidence for this dispute. Every review is logged.</label>
+          <label className="flex items-start gap-2 rounded-2xl bg-white/[.04] p-3 text-xs text-white/65"><input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} className="mt-0.5 accent-[#ff5e8a]" />I allow the Shine team to review this chat's records and my evidence for this dispute. Every review is logged.</label>
           <Button className="w-full" variant="danger" loading={busy === "dispute"} disabled={reasonText.trim().length < 20 || !agree} onClick={() => run("dispute", async () => {
             await api("/api/escrow", { action: "creator_dispute", chatId, n: dispute, reason: reasonText.trim(), evidence, links: links.split(/[,\s]+/).filter((x) => /^https?:\/\//.test(x)) });
             setDispute(null); onStatus({ kind: "success", title: "Dispute opened", msg: "The funds are held in the Shine Vault while our team reviews the case. We'll update you in this chat." });
@@ -259,7 +258,7 @@ export function EscrowMessage({ m }: { m: { text?: string; signature?: string; k
   return (
     <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="mx-auto my-2 w-full max-w-md">
       <div className="glass flex items-start gap-3 rounded-2xl p-3">
-        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-pink/15 text-pink ring-1 ring-pink/30"><VaultIcon s={16} /></span>
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl icon-grad neu-sm text-pink"><VaultIcon s={16} /></span>
         <div className="min-w-0 text-sm">
           <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-pink">Shine escrow</p>
           <p className={tone}>{m.text}</p>

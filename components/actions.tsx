@@ -44,7 +44,7 @@ export function LikeButton({ path, count = 0, size = 18 }: { path: string; count
     <ActionBtn label={liked ? "Unlike" : "Like"} active={liked} count={n} onClick={toggle} icon={
       <span className="relative">
         <motion.svg key={String(liked)} width={size} height={size} viewBox="0 0 24 24" initial={liked ? { scale: 0.4 } : false} animate={{ scale: [null, 1.25, 1] as any }} transition={{ duration: 0.35 }}
-          fill={liked ? "#ff2fa6" : "none"} stroke={liked ? "#ff2fa6" : "currentColor"} strokeWidth="1.9" strokeLinejoin="round">
+          fill={liked ? "#ff5e8a" : "none"} stroke={liked ? "#ff5e8a" : "currentColor"} strokeWidth="1.9" strokeLinejoin="round">
           <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />
         </motion.svg>
         <AnimatePresence>{burst > 0 && liked && (

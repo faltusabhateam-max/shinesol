@@ -26,9 +26,9 @@ export function AvatarCropper({ img, onCancel, onDone }: { img: HTMLImageElement
             onPointerUp={() => (drag.current = null)} onPointerCancel={() => (drag.current = null)}>
             <img src={img.src} alt="" draggable={false} className="pointer-events-none absolute max-w-none" style={{ width: w, height: h, left: pos.x, top: pos.y }} />
             <div className="pointer-events-none absolute inset-0 rounded-3xl" style={{ boxShadow: `inset 0 0 0 ${BOX}px rgba(0,0,0,.55)`, WebkitMaskImage: "radial-gradient(circle at center, transparent 69.5%, black 70%)", maskImage: "radial-gradient(circle at center, transparent 69.5%, black 70%)" }} />
-            <div className="pointer-events-none absolute inset-0 m-auto rounded-full ring-2 ring-pink shadow-[0_0_20px_rgba(255,47,166,.6)]" style={{ width: BOX * 0.99, height: BOX * 0.99 }} />
+            <div className="pointer-events-none absolute inset-0 m-auto rounded-full ring-2 ring-pink shadow-[var(--raise-sm)]" style={{ width: BOX * 0.99, height: BOX * 0.99 }} />
           </div>
-          <input type="range" min={1} max={4} step={0.01} value={zoom} onChange={(e) => setZoom(Number(e.target.value))} className="mt-5 w-full max-w-[280px] accent-[#ff2fa6]" aria-label="Zoom" />
+          <input type="range" min={1} max={4} step={0.01} value={zoom} onChange={(e) => setZoom(Number(e.target.value))} className="mt-5 w-full max-w-[280px] accent-[#ff5e8a]" aria-label="Zoom" />
           <p className="mt-2 text-xs text-white/45">Drag to reposition · slide to zoom</p>
           <div className="mt-5 flex w-full gap-2">
             <Button variant="glass" className="flex-1" onClick={onCancel}>Cancel</Button>

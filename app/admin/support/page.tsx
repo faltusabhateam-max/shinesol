@@ -41,8 +41,8 @@ export default function SupportInbox() {
   return (
     <div>
       <div className="mb-4 flex items-end justify-between">
-        <div><h1 className="font-display text-3xl font-semibold">Support inbox</h1><p className="text-sm text-white/50">{threads ? `${threads.length} conversations · ${unread} awaiting reply` : "Loading…"}</p></div>
-        <span className="flex items-center gap-1.5 text-xs text-emerald-300/80"><motion.span className="h-2 w-2 rounded-full bg-emerald-400" animate={{ opacity: [1, 0.3, 1] }} transition={{ repeat: Infinity, duration: 1.6 }} />Live</span>
+        <div><h1 className="font-display text-3xl font-bold">Support inbox</h1><p className="text-sm text-white/50">{threads ? `${threads.length} conversations · ${unread} awaiting reply` : "Loading…"}</p></div>
+        <span className="flex items-center gap-1.5 text-xs text-emerald-300/80"><motion.span className="h-2 w-2 rounded-full bg-emerald-400" />Live</span>
       </div>
       <div className="grid gap-4 md:grid-cols-[340px_1fr]">
         <div className={`${sel ? "hidden md:block" : ""}`}>
@@ -60,7 +60,7 @@ export default function SupportInbox() {
                     <div className="flex items-baseline justify-between gap-2"><p className="flex items-center gap-1 min-w-0 text-sm font-semibold"><span className="truncate">{u ? displayName(u) : th.name || th.username}</span><VerifiedBadge uid={th.uid} size={13} />{deactivated.has(th.uid) && <span className="text-[9px] uppercase text-red-300">· deactivated</span>}</p><span className="shrink-0 text-[11px] text-white/40">{timeAgo(th.updatedAt)}</span></div>
                     <p className={`truncate text-xs ${th.unreadForSupport ? "font-semibold text-white" : "text-white/50"}`}>{th.lastFrom === "support" ? "You: " : ""}{th.lastMessage}</p>
                   </div>
-                  {th.unreadForSupport && <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-pink shadow-[0_0_10px_rgba(255,47,166,.9)]" />}
+                  {th.unreadForSupport && <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-pink shadow-[var(--raise-sm)]" />}
                 </motion.button>
               );
             })}
@@ -81,7 +81,7 @@ export default function SupportInbox() {
             } />
           ) : (
             <div className="glass grid h-[calc(100dvh-14rem)] place-items-center rounded-3xl text-center">
-              <div><motion.img src="/brand/star-192.png" alt="" className="mx-auto h-16 w-16 opacity-80" animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 5 }} /><p className="mt-3 font-semibold">Select a conversation</p><p className="text-sm text-white/45">Replies are delivered to users in real time.</p></div>
+              <div><motion.img src="/brand/star-192.png" alt="" className="mx-auto h-16 w-16 opacity-80" /><p className="mt-3 font-semibold">Select a conversation</p><p className="text-sm text-white/45">Replies are delivered to users in real time.</p></div>
             </div>
           )}
         </div>

@@ -80,7 +80,7 @@ export default function AdminEscrow() {
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-        <div><p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pink">Shine vault</p><h1 className="font-display text-3xl font-semibold">Escrow</h1><p className="text-sm text-white/50">Auto-payment plans, held balances, disputes and off-requests.</p></div>
+        <div><p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-pink">Shine vault</p><h1 className="font-display text-3xl font-bold">Escrow</h1><p className="text-sm text-white/50">Auto-payment plans, held balances, disputes and off-requests.</p></div>
       </div>
       <div className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
         {[
@@ -90,9 +90,8 @@ export default function AdminEscrow() {
           ["Needs attention", String((plans || []).filter(needs).length), "Disputes & off-requests"],
         ].map(([l, v, sub], i) => (
           <motion.div key={String(l)} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className={`glass relative overflow-hidden rounded-3xl p-4 ${i === 3 && Number(v) > 0 ? "neon" : ""}`}>
-            <motion.div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-pink/20 blur-2xl" animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 4, delay: i * 0.3 }} />
-            <span className="relative grid h-10 w-10 place-items-center rounded-2xl bg-pink/15 text-pink ring-1 ring-pink/30"><VaultIcon /></span>
-            <p className="relative mt-3 font-display text-2xl font-semibold">{v}</p><p className="relative text-sm font-semibold text-white/80">{l}</p><p className="relative truncate text-xs text-white/45">{sub}</p>
+            <span className="relative grid h-10 w-10 place-items-center rounded-2xl icon-grad neu-sm text-pink"><VaultIcon /></span>
+            <p className="relative mt-3 font-display text-2xl font-bold">{v}</p><p className="relative text-sm font-semibold text-white/80">{l}</p><p className="relative truncate text-xs text-white/45">{sub}</p>
           </motion.div>
         ))}
       </div>
@@ -101,7 +100,7 @@ export default function AdminEscrow() {
           <div className="mb-3 flex gap-1 rounded-2xl bg-white/[.04] p-1 text-sm font-semibold">
             {(["attention", "active", "off", "all"] as Filter[]).map((f) => (
               <button key={f} onClick={() => setFilter(f)} className={`relative flex-1 rounded-xl py-2 ${filter === f ? "text-white" : "text-white/50"}`}>
-                {filter === f && <motion.span layoutId="esc-f" className="absolute inset-0 rounded-xl bg-pink/20 ring-1 ring-pink/40" />}<span className="relative">{f === "attention" ? "Attention" : f[0].toUpperCase() + f.slice(1)}</span>
+                {filter === f && <motion.span layoutId="esc-f" className="absolute inset-0 rounded-xl neu-inset" />}<span className="relative">{f === "attention" ? "Attention" : f[0].toUpperCase() + f.slice(1)}</span>
               </button>
             ))}
           </div>
@@ -123,7 +122,7 @@ export default function AdminEscrow() {
           {plan ? (
             <motion.div key={plan.id} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }} className="glass rounded-3xl p-5">
               <div className="flex items-start justify-between gap-3">
-                <div><p className="font-display text-xl font-semibold">{plan.projectName} → @{plan.creatorUsername}</p><p className="text-sm text-white/50">{fmtUsd(plan.usd)} {plan.freq} · creator wallet <a className="font-mono hover:text-pink" href={solscanAccount(plan.creatorWallet)} target="_blank" rel="noopener noreferrer">{short(plan.creatorWallet, 4)}</a></p></div>
+                <div><p className="font-display text-xl font-bold">{plan.projectName} → @{plan.creatorUsername}</p><p className="text-sm text-white/50">{fmtUsd(plan.usd)} {plan.freq} · creator wallet <a className="font-mono hover:text-pink" href={solscanAccount(plan.creatorWallet)} target="_blank" rel="noopener noreferrer">{short(plan.creatorWallet, 4)}</a></p></div>
                 <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold uppercase ring-1 ${plan.status === "active" ? "bg-emerald-400/10 text-emerald-200 ring-emerald-300/30" : "bg-white/10 text-white/60 ring-white/20"}`}>{plan.status === "active" ? "Auto-pay on" : plan.status}</span>
               </div>
               {plan.offRequest?.status === "pending" && (
@@ -174,7 +173,7 @@ export default function AdminEscrow() {
             <div>
               <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/45">Chat records {caseView.messages && <span className="normal-case text-white/35">· read-only, audit-logged</span>}</p>
               {caseView.messages ? <div className="max-h-[30vh] space-y-1.5 overflow-y-auto rounded-2xl bg-black/30 p-2">{caseView.messages.map((m: any) => (
-                <div key={m.id} className={`rounded-xl px-3 py-1.5 text-sm ${m.senderUid === "shine" ? "bg-pink/10 text-pink" : m.senderUid === plan.projectUid ? "mr-8 bg-white/[.06]" : "ml-8 bg-white/[.03]"}`}>
+                <div key={m.id} className={`rounded-xl px-3 py-1.5 text-sm ${m.senderUid === "shine" ? "icon-grad neu-sm text-pink" : m.senderUid === plan.projectUid ? "mr-8 bg-white/[.06]" : "ml-8 bg-white/[.03]"}`}>
                   <p className="text-[10px] font-semibold uppercase text-white/40">{m.senderUid === "shine" ? "Shine" : m.senderUid === plan.projectUid ? plan.projectName : `@${plan.creatorUsername}`}</p>
                   {m.image ? <img src={m.image} alt="" className="mt-1 max-h-32 rounded-lg" /> : m.text || m.type}
                 </div>))}</div>
@@ -195,7 +194,7 @@ export default function AdminEscrow() {
             <p className="rounded-xl bg-emerald-400/10 px-3 py-2 text-xs text-emerald-200">Read-only · access expires {new Date(chatView.until).toLocaleTimeString()} · this view is audit-logged</p>
             <div className="max-h-[45vh] space-y-2 overflow-y-auto">
               {chatView.messages.map((m) => (
-                <div key={m.id} className={`rounded-2xl px-3 py-2 text-sm ${m.senderUid === "shine" ? "bg-pink/10 text-pink" : m.senderUid === plan?.projectUid ? "bg-white/[.06]" : "ml-8 bg-white/[.03]"}`}>
+                <div key={m.id} className={`rounded-2xl px-3 py-2 text-sm ${m.senderUid === "shine" ? "icon-grad neu-sm text-pink" : m.senderUid === plan?.projectUid ? "bg-white/[.06]" : "ml-8 bg-white/[.03]"}`}>
                   <p className="text-[10px] font-semibold uppercase text-white/40">{m.senderUid === "shine" ? "Shine" : m.senderUid === plan?.projectUid ? plan?.projectName : `@${plan?.creatorUsername}`}</p>
                   {m.text || (m.image ? "📷 Image" : m.type)}
                 </div>

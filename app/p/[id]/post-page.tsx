@@ -140,11 +140,11 @@ export default function PostPage({ id }: { id: string }) {
       <PostCard post={post} myApp={myApp} isOwner={post.authorUid === uid} detail onReply={() => focusReply(null)} autoApply={autoApply} />
       <div id="replies" ref={composerRef} className="mt-4 scroll-mt-24"><Composer post={post} replyTo={replyTo} onCancelReply={() => setReplyTo(null)} inputRef={inputRef} /></div>
       <div className="mt-5 flex items-center justify-between">
-        <h2 className="font-display text-lg font-semibold">Replies <span className="text-white/40">{post.replies || 0}</span></h2>
+        <h2 className="font-display text-lg font-bold">Replies <span className="text-white/40">{post.replies || 0}</span></h2>
         <div className="flex rounded-full bg-white/[.05] p-0.5 text-xs font-semibold">
           {(["top", "new"] as const).map((s) => (
             <button key={s} onClick={() => setSort(s)} className={`relative rounded-full px-3 py-1 ${sort === s ? "text-white" : "text-white/45"}`}>
-              {sort === s && <motion.span layoutId="reply-sort" className="absolute inset-0 rounded-full bg-pink/20 ring-1 ring-pink/40" />}<span className="relative">{s === "top" ? "Top" : "Latest"}</span>
+              {sort === s && <motion.span layoutId="reply-sort" className="absolute inset-0 rounded-full neu-inset" />}<span className="relative">{s === "top" ? "Top" : "Latest"}</span>
             </button>
           ))}
         </div>

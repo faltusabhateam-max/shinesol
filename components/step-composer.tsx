@@ -37,7 +37,7 @@ function StepCard({ s, i, n, onChange, onRemove, onMove }: { s: ApplyStep; i: nu
                 <textarea className="input min-h-20 resize-y" placeholder={s.type === "message" ? "Your message to applicants…" : "Description / instructions (optional)"} maxLength={1000} value={s.text || ""} onChange={(e) => onChange({ text: e.target.value })} />
                 {s.type === "username" && (
                   <div className="flex gap-1.5">{(["x", "telegram", "discord"] as const).map((p) => (
-                    <button key={p} type="button" onClick={() => onChange({ platform: p })} className={`flex-1 rounded-xl py-2 text-xs font-semibold ring-1 ${s.platform === p ? "bg-pink text-white ring-pink" : "bg-white/5 text-white/60 ring-white/10"}`}>{p === "x" ? "X" : p === "telegram" ? "Telegram" : "Discord"}</button>
+                    <button key={p} type="button" onClick={() => onChange({ platform: p })} className={`flex-1 rounded-xl py-2 text-xs font-semibold ring-1 ${s.platform === p ? "grad text-white ring-pink" : "bg-white/5 text-white/60 ring-white/10"}`}>{p === "x" ? "X" : p === "telegram" ? "Telegram" : "Discord"}</button>
                   ))}</div>
                 )}
                 {s.type === "choice" && (

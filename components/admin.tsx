@@ -59,7 +59,7 @@ function AdminGate({ children }: { children: ReactNode }) {
         <div className="mx-auto grid h-16 w-16 place-items-center rounded-full border border-red-400/40 bg-red-500/10 text-red-300">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="5" y="10" width="14" height="10" rx="2.5" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></svg>
         </div>
-        <h2 className="mt-4 font-display text-xl font-semibold">Access restricted</h2>
+        <h2 className="mt-4 font-display text-xl font-bold">Access restricted</h2>
         <p className="mt-2 text-sm text-white/60">{state.error}</p>
         <Link href="/"><Button variant="glass" className="mt-5 w-full">Back to Shine</Button></Link>
       </Card>
@@ -99,7 +99,7 @@ function Shell({ children }: { children: ReactNode }) {
           <nav className="ml-4 hidden gap-0.5 md:flex">
             {NAV.map((n) => (
               <Link key={n.href} href={n.href} className={`relative flex items-center gap-2 rounded-xl px-2.5 py-2 text-sm font-semibold transition ${active(n.href) ? "text-white" : "text-white/55 hover:text-white"}`}>
-                {active(n.href) && <motion.span layoutId="admin-nav" className="absolute inset-0 rounded-xl bg-pink/15 ring-1 ring-pink/40" />}
+                {active(n.href) && <motion.span layoutId="admin-nav" className="absolute inset-0 rounded-xl neu-inset" />}
                 <svg className="relative" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{n.icon}</svg>
                 <span className="relative hidden lg:inline">{n.label}</span>
                 {n.label === "Support" && unread > 0 && <span className="relative rounded-full bg-pink px-1.5 text-[10px] font-bold text-white">{unread}</span>}
@@ -117,7 +117,7 @@ function Shell({ children }: { children: ReactNode }) {
         <div className="glass-strong flex w-full max-w-md justify-between rounded-[1.75rem] p-2">
           {NAV.map((n) => (
             <Link key={n.href} href={n.href} className="relative flex flex-1 flex-col items-center gap-0.5 py-1.5">
-              {active(n.href) && <motion.span layoutId="admin-nav-m" className="absolute inset-0 rounded-2xl bg-pink/15 ring-1 ring-pink/40" />}
+              {active(n.href) && <motion.span layoutId="admin-nav-m" className="absolute inset-0 rounded-2xl neu-inset" />}
               <svg className={`relative ${active(n.href) ? "text-pink" : "text-white/55"}`} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{n.icon}</svg>
               <span className={`relative text-[10.5px] font-semibold ${active(n.href) ? "text-white" : "text-white/50"}`}>{n.label}</span>
               {n.label === "Support" && unread > 0 && <span className="absolute right-3 top-0.5 rounded-full bg-pink px-1.5 text-[9px] font-bold">{unread}</span>}

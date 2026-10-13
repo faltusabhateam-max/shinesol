@@ -116,7 +116,7 @@ function SendScreen() {
     <div className="space-y-4">
       <BackLink href="/wallet" label="Wallet" />
       <div>
-        <h1 className="font-display text-3xl font-semibold">Send SOL</h1>
+        <h1 className="font-display text-3xl font-bold">Send SOL</h1>
         <p className="mt-1 text-sm text-white/55">Withdraw from your Shine Wallet to any Solana address.</p>
       </div>
 

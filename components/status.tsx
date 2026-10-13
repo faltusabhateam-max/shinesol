@@ -7,11 +7,11 @@ export type StatusKind = "success" | "failed" | "denied";
 
 /** Full-screen animated outcome overlay: success / failed / denied. */
 export function StatusOverlay({ kind, title, message, onClose, action }: { kind: StatusKind | null; title?: string; message?: ReactNode; onClose: () => void; action?: ReactNode }) {
-  const color = kind === "success" ? "#ff2fa6" : kind === "denied" ? "#f5b942" : "#ff5470";
+  const color = kind === "success" ? "#ff5e8a" : kind === "denied" ? "#f5b942" : "#ff5470";
   return (
     <AnimatePresence>
       {kind && (
-        <motion.div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/80 px-6 backdrop-blur-md" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        <motion.div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/80 px-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <motion.div initial={{ scale: 0.85, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0 }} transition={{ type: "spring", stiffness: 260, damping: 22 }}
             className="glass-strong w-full max-w-sm rounded-[2rem] p-8 text-center">
             <div className="relative mx-auto mb-6 h-32 w-32">
@@ -47,7 +47,7 @@ export function StatusOverlay({ kind, title, message, onClose, action }: { kind:
                   transition={{ delay: 0.6, duration: 1.1, ease: "easeOut" }} />
               ))}
             </div>
-            <motion.h3 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="font-display text-2xl font-semibold">
+            <motion.h3 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="font-display text-2xl font-bold">
               {title || (kind === "success" ? "Success" : kind === "denied" ? "Request declined" : "Something went wrong")}
             </motion.h3>
             {message && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.65 }} className="mt-2 text-sm text-white/65">{message}</motion.div>}

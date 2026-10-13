@@ -57,21 +57,21 @@ function Inner() {
   return (
     <>
       <div className="mb-4 flex items-end justify-between">
-        <div><h1 className="font-display text-3xl font-semibold">Wallet</h1><p className="mt-1 text-sm text-white/55">Your self-custodial Solana wallet.</p></div>
-        <button onClick={refresh} className="glass rounded-full p-2.5 text-white/70 hover:text-white" aria-label="Refresh">
+        <div><h1 className="font-display text-3xl font-bold">Wallet</h1><p className="mt-1 text-sm text-white/55">Your self-custodial Solana wallet.</p></div>
+        <button onClick={refresh} className="neu-sm grid h-11 w-11 place-items-center rounded-[14px] text-white/70 hover:text-white" aria-label="Refresh">
           <motion.span className="block" animate={loading ? { rotate: 360 } : { rotate: 0 }} transition={loading ? { repeat: Infinity, duration: 0.9, ease: "linear" } : {}}>{ICON.refresh}</motion.span>
         </button>
       </div>
 
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass neon relative overflow-hidden rounded-[2rem] p-6">
-        <motion.img src="/brand/star.png" alt="" className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 opacity-25" animate={{ rotate: [0, 15, 0] }} transition={{ duration: 8, repeat: Infinity }} />
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">Total balance</p>
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="glass relative overflow-hidden rounded-[24px] p-6">
+        <div className="flex items-start justify-between"><span className="icon-grad neu-sm grid h-11 w-11 place-items-center rounded-[14px] text-pink">{ICON.wallet}</span><span className="dot-grad mt-2 h-2.5 w-2.5 rounded-full" aria-hidden /></div>
+        <p className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-white/55">Total balance</p>
         <div className="mt-2 flex items-baseline gap-2">
-          {bal == null ? <div className="skeleton h-10 w-40 rounded-xl" /> : <motion.span key={bal} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="font-display text-4xl font-semibold">{fmtSol(bal, 4)}</motion.span>}
-          <span className="text-lg font-semibold text-pink">SOL</span>
+          {bal == null ? <div className="skeleton h-10 w-40 rounded-xl" /> : <motion.span key={bal} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="font-display text-[44px] font-extrabold leading-none tracking-tight min-[380px]:text-5xl">{fmtSol(bal, 4)}</motion.span>}
+          <span className="text-lg font-bold grad-text">SOL</span>
         </div>
         <p className="mt-1 text-sm text-white/60">{usdVal != null ? fmtUsd(usdVal) : usd ? "—" : "Fetching price…"}{usd && <span className="ml-2 text-white/40">1 SOL = {fmtUsd(usd)}{change != null && <span className={change >= 0 ? "text-emerald-300" : "text-red-300"}> {change >= 0 ? "+" : ""}{change.toFixed(2)}%</span>}</span>}</p>
-        <button onClick={() => { navigator.clipboard.writeText(address); toast("Address copied", "ok"); }} className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 font-mono text-xs text-white/85 hover:bg-white/15">
+        <button onClick={() => { navigator.clipboard.writeText(address); toast("Address copied", "ok"); }} className="neu-inset mt-5 inline-flex items-center gap-2 rounded-full px-3.5 py-2 font-mono text-xs text-white/85 hover:bg-white/15">
           {short(address, 6)} {ICON.copy}
         </button>
         <div className="mt-5 grid grid-cols-3 gap-2">
@@ -86,7 +86,7 @@ function Inner() {
           <p className="mb-2 px-1 text-xs font-semibold text-white/50">Active wallet</p>
           <div className="space-y-1">
             {wallets.map((w: any, i: number) => (
-              <button key={w.address} onClick={() => setActiveAddress(w.address)} className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-sm ${w.address === address ? "bg-pink/15 ring-1 ring-pink/40" : "hover:bg-white/5"}`}>
+              <button key={w.address} onClick={() => setActiveAddress(w.address)} className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-sm ${w.address === address ? "neu-inset" : "hover:bg-white/5"}`}>
                 <span className="font-mono">{short(w.address, 6)}</span><span className="text-xs text-white/50">{i === 0 ? "Shine Wallet" : "Imported"}</span>
               </button>
             ))}
@@ -100,7 +100,7 @@ function Inner() {
       </div>
 
       <section className="mt-7">
-        <h2 className="mb-3 font-display text-lg font-semibold">Transaction history</h2>
+        <h2 className="mb-3 font-display text-lg font-bold">Transaction history</h2>
         {hist === null ? <div className="space-y-2">{[0, 1, 2].map((i) => <div key={i} className="skeleton h-16 rounded-2xl" />)}</div>
           : histErr ? <p className="glass rounded-2xl p-4 text-sm text-white/60">{histErr}</p>
           : !hist.length ? <p className="glass rounded-2xl p-5 text-center text-sm text-white/55">No transactions yet. Deposit SOL or get paid by a project to get started.</p>
@@ -109,7 +109,7 @@ function Inner() {
               {hist.map((h, i) => (
                 <motion.a key={h.signature} href={solscanTx(h.signature)} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i, 10) * 0.03 }}
                   className="glass flex items-center gap-3 rounded-2xl p-3 hover:border-pink/40">
-                  <span className={`flex h-10 w-10 items-center justify-center rounded-full ${h.status === "failed" ? "bg-red-500/15 text-red-300" : h.kind === "received" ? "bg-emerald-400/15 text-emerald-300" : "bg-pink/15 text-pink"}`}>
+                  <span className={`flex h-10 w-10 items-center justify-center rounded-full ${h.status === "failed" ? "bg-red-500/15 text-red-300" : h.kind === "received" ? "bg-emerald-400/15 text-emerald-300" : "icon-grad text-pink"} neu-sm`}>
                     {h.kind === "received" ? ICON.arrowDown : ICON.arrowUp}
                   </span>
                   <div className="min-w-0 flex-1">
@@ -142,7 +142,7 @@ function ReceiveSheet({ open, onClose, address }: { open: boolean; onClose: () =
     <BottomSheet open={open} onClose={onClose} title="Receive SOL">
       <div className="flex flex-col items-center pb-4 text-center">
         <motion.div initial={{ scale: 0.85, opacity: 0, rotate: -4 }} animate={{ scale: 1, opacity: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
-          className="relative rounded-[1.75rem] bg-white p-4 shadow-[0_0_50px_rgba(255,47,166,.45)]">
+          className="relative rounded-[1.75rem] bg-white p-4 shadow-[var(--raise-sm)]">
           <QRCodeSVG value={address} size={196} level="H" marginSize={0} fgColor="#0b0610" imageSettings={{ src: "/brand/star-192.png", height: 46, width: 46, excavate: true }} />
         </motion.div>
         <p className="mt-4 text-sm text-white/65">Send only <span className="font-semibold text-white">SOL</span> on the <span className="font-semibold text-white">Solana</span> network to this address.</p>

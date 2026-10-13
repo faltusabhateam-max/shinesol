@@ -44,17 +44,16 @@ const motions: Record<string, any> = {
 export type IconName = keyof typeof paths;
 export function LIcon({ name, size = 20, className = "", animate = true }: P & { name: string }) {
   return (
-    <motion.svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={`shrink-0 ${className}`}
-      animate={animate && motions[name] ? motions[name] : undefined} transition={{ repeat: Infinity, duration: 2.6, repeatDelay: 1.4, ease: "easeInOut" }} aria-hidden>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className={`shrink-0 ${className}`} aria-hidden>
       {paths[name] || paths.spark}
-    </motion.svg>
+    </svg>
   );
 }
 /** Rounded pink tile with an animated icon. */
 export function IconTile({ name, size = 36, className = "" }: { name: string; size?: number; className?: string }) {
   return (
-    <motion.span whileHover={{ scale: 1.08, rotate: -4 }} className={`grid shrink-0 place-items-center rounded-xl bg-pink/12 text-pink ring-1 ring-pink/30 shadow-[0_0_18px_-8px_#ff2fa6] ${className}`} style={{ width: size, height: size }}>
-      <LIcon name={name} size={Math.round(size * 0.55)} />
-    </motion.span>
+    <span className={`icon-grad neu-sm grid shrink-0 place-items-center rounded-[30%] ${className}`} style={{ width: size, height: size }}>
+      <LIcon name={name} size={Math.round(size * 0.5)} />
+    </span>
   );
 }

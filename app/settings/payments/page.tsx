@@ -31,12 +31,12 @@ function Inner() {
   return (
     <div className="mx-auto max-w-2xl">
       <BackLink href="/settings" label="Settings" />
-      <h1 className="mb-1 font-display text-3xl font-semibold">All auto-payments</h1>
+      <h1 className="mb-1 font-display text-3xl font-bold">All auto-payments</h1>
       <p className="mb-4 text-sm text-white/55">Every escrow plan you pay or receive, with live status. Open one to fund, release or request changes.</p>
       <div className="mb-4 grid grid-cols-3 gap-2">
         {[["Active plans", String(stats.active)], ["Held in vault", `${fmtSol(stats.held, 3)} SOL`], ["Received", fmtUsd(stats.paid)]].map(([l, v], i) => (
           <motion.div key={l} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="glass rounded-2xl p-3">
-            <p className="font-display text-xl font-semibold">{v}</p><p className="text-[11px] text-white/45">{l}</p>
+            <p className="font-display text-xl font-bold">{v}</p><p className="text-[11px] text-white/45">{l}</p>
           </motion.div>
         ))}
       </div>

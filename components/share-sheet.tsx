@@ -37,7 +37,7 @@ export function ShareSheet({ open, onClose, url, title, onShared }: { open: bool
       <div className="mb-4 flex items-center gap-2 rounded-2xl bg-white/[.04] p-2 ring-1 ring-white/10">
         <span className="min-w-0 flex-1 truncate px-2 font-mono text-xs text-white/60">{url}</span>
         <motion.button type="button" whileTap={{ scale: 0.94 }} onClick={async () => { const ok = await copy(); toast(ok ? "Link copied" : "Couldn't copy the link", ok ? "ok" : "err"); if (ok) { onShared?.(); onClose(); } }}
-          className="rounded-xl bg-pink px-3 py-2 text-xs font-semibold text-white shadow-[0_0_18px_-4px_#ff2fa6]">Copy link</motion.button>
+          className="rounded-xl bg-pink px-3 py-2 text-xs font-semibold text-white shadow-[var(--raise-sm)]">Copy link</motion.button>
       </div>
       <div className="grid grid-cols-4 gap-x-2 gap-y-4 sm:grid-cols-5">
         {TARGETS.map((t, i) => (

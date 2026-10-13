@@ -50,7 +50,7 @@ function UserRegister({ uid }: { uid: string }) {
           {list.map((a, i) => (
             <motion.button key={a.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i, 10) * 0.03 }} onClick={() => setSel(a)}
               className="glass flex w-full items-center gap-3 rounded-2xl p-3 text-left hover:border-pink/40">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-pink/15 ring-1 ring-pink/30"><img src="/brand/star-64.png" alt="" className="h-5 w-5" /></div>
+              <div className="flex h-11 w-11 items-center justify-center rounded-full neu-inset"><img src="/brand/star-64.png" alt="" className="h-5 w-5" /></div>
               <div className="min-w-0 flex-1">
                 <p className="flex items-center gap-1 min-w-0 font-semibold"><span className="truncate">{a.projectName}</span><VerifiedBadge uid={a.projectUid} size={14} /></p>
                 <p className="truncate text-xs text-white/50">{a.postExcerpt} · {timeAgo(a.createdAt)}</p>
@@ -137,7 +137,7 @@ function ProjectReview({ uid }: { uid: string }) {
             const ans = a.answers as Record<string, string>;
             return (
               <motion.button key={a.id} initial={{ opacity: 0, y: 10, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: Math.min(i, 10) * 0.035 }} whileHover={{ y: -2 }} onClick={() => setSelId(a.id)}
-                className={`glass relative overflow-hidden rounded-3xl p-4 text-left transition hover:border-pink/40 ${v ? "!border-pink/45 shadow-[0_0_30px_-12px_rgba(255,47,166,.7)]" : ""}`}>
+                className={`glass relative overflow-hidden rounded-3xl p-4 text-left transition hover:border-pink/40 ${v ? "!border-pink/45 shadow-[var(--raise-sm)]" : ""}`}>
                 {v && <span className="absolute right-0 top-0 rounded-bl-2xl bg-pink/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-pink">Verified</span>}
                 <div className="flex items-center gap-3">
                   <Avatar avatar={a.applicantAvatar === "custom" ? undefined : a.applicantAvatar} size={50} ring={v} />

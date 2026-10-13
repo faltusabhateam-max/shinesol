@@ -77,8 +77,8 @@ function Detail({ u, onClose, onDeleted }: { u: ShineUser; onClose: () => void; 
         <button onClick={onClose} className="absolute right-3 top-3 rounded-full bg-black/60 p-2 text-white hover:bg-black" aria-label="Close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg></button>
       </div>
       <div className="px-5 pb-5">
-        <div className="-mt-9 flex items-end justify-between"><div className="rounded-full bg-[#050307] p-1"><Avatar avatar={u.avatar} size={72} ring /></div><StatusChip role={u.role} verified={isV} deactivated={isD} /></div>
-        <h2 className="mt-2 flex min-w-0 items-center gap-1.5 font-display text-xl font-semibold"><span className="truncate">{displayName(u)}</span><VerifiedBadge uid={u.uid} size={18} /></h2>
+        <div className="-mt-9 flex items-end justify-between"><div className="rounded-full bg-[#2b2b2e] p-1"><Avatar avatar={u.avatar} size={72} ring /></div><StatusChip role={u.role} verified={isV} deactivated={isD} /></div>
+        <h2 className="mt-2 flex min-w-0 items-center gap-1.5 font-display text-xl font-bold"><span className="truncate">{displayName(u)}</span><VerifiedBadge uid={u.uid} size={18} /></h2>
         <p className="text-sm text-white/50">@{u.username} · joined {timeAgo(u.createdAt)}</p>
         <div className="mt-3"><SocialRow s={socialsOf(u)} /></div>
         {u.bio?.trim() && <RichText text={u.bio} className="mt-3 text-sm text-white/75" />}
@@ -109,13 +109,13 @@ function Detail({ u, onClose, onDeleted }: { u: ShineUser; onClose: () => void; 
               </button>
             ))}
             {gMode === "timed" && (
-              <div className="flex gap-1.5">{[1, 3, 6, 12].map((n) => <button key={n} type="button" onClick={() => setMonths(n)} className={`flex-1 rounded-xl py-2 text-sm font-semibold ring-1 ${months === n ? "bg-pink text-white ring-pink" : "bg-white/5 text-white/60 ring-white/10"}`}>{n === 12 ? "1 year" : `${n} mo`}</button>)}</div>
+              <div className="flex gap-1.5">{[1, 3, 6, 12].map((n) => <button key={n} type="button" onClick={() => setMonths(n)} className={`flex-1 rounded-xl py-2 text-sm font-semibold ring-1 ${months === n ? "grad text-white ring-pink" : "bg-white/5 text-white/60 ring-white/10"}`}>{n === 12 ? "1 year" : `${n} mo`}</button>)}</div>
             )}
             <Button className="w-full" loading={busy === "verify"} onClick={() => run("verify", gMode === "permanent" ? "Permanent team badge granted" : `Verified for ${months === 12 ? "1 year" : `${months} months`}`, { mode: gMode, months })}>Grant badge</Button>
           </div>
         </BottomSheet>
 
-        <h3 className="mt-6 font-display font-semibold">Posts <span className="text-white/40">{posts?.length ?? ""}</span></h3>
+        <h3 className="mt-6 font-display font-bold">Posts <span className="text-white/40">{posts?.length ?? ""}</span></h3>
         <div className="mt-2 space-y-2">
           {posts === null ? <StarLoader size={28} /> : !posts.length ? <p className="text-sm text-white/40">No posts.</p> : posts.map((p) => (
             <Link key={p.id} href={`/admin/posts?p=${p.id}`} className="block rounded-2xl border border-white/10 bg-white/[.03] p-3 hover:border-pink/40">
@@ -124,7 +124,7 @@ function Detail({ u, onClose, onDeleted }: { u: ShineUser; onClose: () => void; 
             </Link>
           ))}
         </div>
-        <h3 className="mt-6 font-display font-semibold">Applications <span className="text-white/40">{apps?.length ?? ""}</span></h3>
+        <h3 className="mt-6 font-display font-bold">Applications <span className="text-white/40">{apps?.length ?? ""}</span></h3>
         <div className="mt-2 space-y-2">
           {apps === null ? <StarLoader size={28} /> : !apps.length ? <p className="text-sm text-white/40">No applications.</p> : apps.map((a) => <AppRow key={a.id} a={a} />)}
         </div>
@@ -163,7 +163,7 @@ export default function AdminUsers() {
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
-        <div><h1 className="font-display text-3xl font-semibold">Accounts</h1><p className="text-sm text-white/50">{users ? `${users.length} total · ${users.filter((u) => u.role === "project").length} projects` : "Loading…"}</p></div>
+        <div><h1 className="font-display text-3xl font-bold">Accounts</h1><p className="text-sm text-white/50">{users ? `${users.length} total · ${users.filter((u) => u.role === "project").length} projects` : "Loading…"}</p></div>
       </div>
       <div className="relative mb-3"><span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/40">{ICON.search}</span>
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search by name, @username, UID or wallet" className="input !rounded-2xl !py-3.5 !pl-11" /></div>

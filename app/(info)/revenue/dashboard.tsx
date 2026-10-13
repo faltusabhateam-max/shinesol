@@ -8,7 +8,7 @@ type Tot = { sol: number; usd: number };
 type Stats = { updatedAt: string; price: number | null; totals: Record<string, Tot> & { verifySubscriptions: number; txCount: number }; vault: { address: string | null; balance: number | null }; users: number; projects: number; series: { day: string; fees: number; verify: number; affiliate: number; paid: number; revenue: number; cumulative: number; cumulativePaid: number }[] };
 type Row = { id: string; at: string; type: string; source: string; sol: number; usd: number | null; signature: string; label: string };
 const TYPE: Record<string, [string, string]> = {
-  fee: ["Fee", "bg-pink/15 text-pink"], payout: ["Paid to creator", "bg-emerald-400/15 text-emerald-300"], escrow_fund: ["Escrow funded", "bg-sky-400/15 text-sky-300"],
+  fee: ["Fee", "icon-grad neu-sm text-pink"], payout: ["Paid to creator", "bg-emerald-400/15 text-emerald-300"], escrow_fund: ["Escrow funded", "bg-sky-400/15 text-sky-300"],
   escrow_refund: ["Escrow refund", "bg-amber-400/15 text-amber-200"], verify: ["Verified plan", "bg-fuchsia-400/15 text-fuchsia-300"], affiliate: ["Affiliate", "bg-violet-400/15 text-violet-300"], dispute: ["Dispute resolution", "bg-red-400/15 text-red-200"],
 };
 
@@ -16,7 +16,7 @@ function Stat({ label, sol, usd, sub, i }: { label: string; sol?: number; usd?: 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="glass rounded-3xl p-4">
       <p className="text-xs text-white/45">{label}</p>
-      <p className="mt-1 font-display text-2xl font-semibold tabular-nums">{sol != null ? `${fmtSol(sol, 3)} SOL` : sub}</p>
+      <p className="mt-1 font-display text-2xl font-bold tabular-nums">{sol != null ? `${fmtSol(sol, 3)} SOL` : sub}</p>
       {sol != null && <p className="text-xs text-white/50">{usd != null ? `≈ ${fmtUsd(usd)}` : "—"}</p>}
     </motion.div>
   );
@@ -86,10 +86,10 @@ export function RevenueDashboard() {
         <Stat i={5} label="Accounts" sub={`${s.users.toLocaleString()} users · ${s.projects.toLocaleString()} projects`} />
       </div>
       <div className="grid gap-3 lg:grid-cols-2">
-        <ChartCard title="Cumulative revenue vs paid out (SOL)" legend={[{ label: "Revenue", color: "#ff2fa6" }, { label: "Paid to creators", color: "#34d399" }]} range={range}>
-          <LineChart data={[series.map((x) => x.cumulative), series.map((x) => x.cumulativePaid)]} keys={[{ label: "Revenue", color: "#ff2fa6" }, { label: "Paid", color: "#34d399" }]} />
+        <ChartCard title="Cumulative revenue vs paid out (SOL)" legend={[{ label: "Revenue", color: "#ff5e8a" }, { label: "Paid to creators", color: "#34d399" }]} range={range}>
+          <LineChart data={[series.map((x) => x.cumulative), series.map((x) => x.cumulativePaid)]} keys={[{ label: "Revenue", color: "#ff5e8a" }, { label: "Paid", color: "#34d399" }]} />
         </ChartCard>
-        <ChartCard title="Daily fees (SOL)" range={range}><Bars data={series.map((x) => x.revenue)} color="linear-gradient(#ff2fa6,#ff2fa680)" /></ChartCard>
+        <ChartCard title="Daily fees (SOL)" range={range}><Bars data={series.map((x) => x.revenue)} color="linear-gradient(180deg,#ff5e8a,#ff8a5c 55%,#8e44ad)" /></ChartCard>
         <ChartCard title="Daily paid to creators (SOL)" range={range}><Bars data={series.map((x) => x.paid)} color="linear-gradient(#34d399,#34d39980)" /></ChartCard>
         <div className="glass rounded-3xl p-4 text-sm text-white/60">
           <h3 className="mb-2 text-sm font-semibold text-white">How this is verified</h3>
@@ -105,7 +105,7 @@ export function RevenueDashboard() {
         <div className="flex flex-wrap items-center justify-between gap-2 p-4">
           <h3 className="text-sm font-semibold">Public on-chain ledger <span className="ml-1 text-white/40">· {t.txCount}</span></h3>
           <div className="flex flex-wrap gap-1">{["all", ...Object.keys(TYPE)].map((k) => (
-            <button key={k} type="button" onClick={() => setFilter(k)} className={`rounded-full px-2.5 py-1 text-[11px] transition ${filter === k ? "bg-pink text-white" : "bg-white/5 text-white/60 hover:text-white"}`}>{k === "all" ? "All" : TYPE[k][0]}</button>
+            <button key={k} type="button" onClick={() => setFilter(k)} className={`rounded-full px-2.5 py-1 text-[11px] transition ${filter === k ? "grad text-white" : "bg-white/5 text-white/60 hover:text-white"}`}>{k === "all" ? "All" : TYPE[k][0]}</button>
           ))}</div>
         </div>
         <div className="overflow-x-auto">

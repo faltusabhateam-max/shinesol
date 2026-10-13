@@ -22,8 +22,8 @@ import { usePrivy } from "@privy-io/react-auth";
 
 export function SupportAvatar({ size = 44 }: { size?: number }) {
   return (
-    <span className="relative grid shrink-0 place-items-center rounded-full bg-gradient-to-br from-pink/40 to-black ring-2 ring-pink/60 shadow-[0_0_18px_rgba(255,47,166,.5)]" style={{ width: size, height: size }}>
-      <motion.img src="/brand/star-192.png" alt="" style={{ width: size * 0.62, height: size * 0.62 }} animate={{ rotate: [0, 10, 0, -10, 0] }} transition={{ repeat: Infinity, duration: 6 }} />
+    <span className="relative grid shrink-0 place-items-center rounded-full bg-gradient-to-br from-pink/40 to-black ring-2 ring-pink/60 shadow-[var(--raise-sm)]" style={{ width: size, height: size }}>
+      <motion.img src="/brand/star-192.png" alt="" style={{ width: size * 0.62, height: size * 0.62 }} />
     </span>
   );
 }
@@ -53,7 +53,7 @@ function RequestCard({ m, mode, profile }: { m: SupportMessage; mode: "user" | "
       <div className="glass relative overflow-hidden rounded-3xl border-pink/30 p-4">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-pink to-transparent" />
         <div className="flex items-center gap-2.5">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-pink/15 text-pink ring-1 ring-pink/30">{r.kind === "x" ? <XIcon size={15} /> : r.kind === "telegram" ? <TelegramIcon size={17} /> : r.kind === "wallet" ? ICON.wallet : FORM_ICON}</span>
+          <span className="grid h-9 w-9 place-items-center rounded-xl icon-grad neu-sm text-pink">{r.kind === "x" ? <XIcon size={15} /> : r.kind === "telegram" ? <TelegramIcon size={17} /> : r.kind === "wallet" ? ICON.wallet : FORM_ICON}</span>
           <div className="min-w-0">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-pink">Request from Shine Support</p>
             <p className="font-semibold leading-tight">{r.title}</p>
@@ -77,7 +77,7 @@ function RequestCard({ m, mode, profile }: { m: SupportMessage; mode: "user" | "
             <Button className="w-full" loading={busy} disabled={missing} onClick={submit}>Submit</Button>
           </div>
         ) : (
-          <p className="mt-3 flex items-center gap-2 text-sm text-white/50"><motion.span className="h-2 w-2 rounded-full bg-amber-300" animate={{ opacity: [1, 0.3, 1] }} transition={{ repeat: Infinity, duration: 1.4 }} />Waiting for the user to respond…</p>
+          <p className="mt-3 flex items-center gap-2 text-sm text-white/50"><motion.span className="h-2 w-2 rounded-full bg-amber-300" />Waiting for the user to respond…</p>
         )}
       </div>
     </motion.div>
@@ -88,7 +88,7 @@ function ReportCard({ m }: { m: SupportMessage }) {
   const r = m.report!;
   return (
     <motion.div initial={{ opacity: 0, y: 10, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="w-full max-w-sm">
-      <div className="relative overflow-hidden rounded-3xl border border-red-400/30 bg-red-500/[.07] p-4 backdrop-blur">
+      <div className="relative overflow-hidden rounded-3xl border border-red-400/30 bg-red-500/[.07] p-4">
         <div className="flex items-center gap-2.5">
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-red-500/15 text-red-300 ring-1 ring-red-400/30">{SHIELD}</span>
           <div className="min-w-0"><p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-red-300">Scam report</p><p className="truncate font-semibold">{r.projectName} <span className="font-normal text-white/50">@{r.projectUsername}</span></p></div>

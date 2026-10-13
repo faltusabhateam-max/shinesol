@@ -50,11 +50,10 @@ export function StepFlow({ steps, projectName, projectAvatar, onClose, onSubmit,
   const answered = useMemo(() => steps.filter((st) => collects(st) && (ans[st.id] || (multi[st.id] || []).length)).length, [steps, ans, multi]);
 
   const body = (
-    <motion.div className="fixed inset-0 z-[90] flex flex-col bg-[#07030a]/95 backdrop-blur-xl" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <motion.div className="pointer-events-none absolute left-1/2 top-1/3 h-80 w-80 -translate-x-1/2 rounded-full bg-pink/20 blur-[100px]" animate={{ scale: [1, 1.15, 1] }} transition={{ repeat: Infinity, duration: 5 }} />
+    <motion.div className="fixed inset-0 z-[90] flex flex-col bg-[#07030a]/95" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <div className="relative mx-auto flex w-full max-w-lg flex-1 flex-col px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))]">
         <div className="flex gap-1">{Array.from({ length: total }).map((_, k) => (
-          <div key={k} className="h-1 flex-1 overflow-hidden rounded-full bg-white/10"><motion.div className="h-full bg-pink shadow-[0_0_8px_#ff2fa6]" initial={false} animate={{ width: k < i ? "100%" : k === i ? "50%" : "0%" }} /></div>
+          <div key={k} className="h-1 flex-1 overflow-hidden rounded-full neu-inset"><motion.div className="grad h-full" initial={false} animate={{ width: k < i ? "100%" : k === i ? "50%" : "0%" }} /></div>
         ))}</div>
         <div className="mt-3 flex items-center gap-2">
           <Avatar avatar={projectAvatar} size={32} />
@@ -69,7 +68,7 @@ export function StepFlow({ steps, projectName, projectAvatar, onClose, onSubmit,
                 <div className="space-y-3">
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="max-w-[92%] rounded-[24px] rounded-tl-md bg-white/[.06] p-4 ring-1 ring-white/10">
                     <div className="mb-2"><IconTile name={stepMeta(s.type).icon} size={34} /></div>
-                    <p className="font-display text-xl font-semibold leading-snug">{s.title}</p>
+                    <p className="font-display text-xl font-bold leading-snug">{s.title}</p>
                     {s.text && <p className="mt-1.5 whitespace-pre-wrap text-[15px] leading-relaxed text-white/70">{s.text}</p>}
                     {!s.required && s.type !== "message" && <p className="mt-2 text-[11px] font-semibold uppercase tracking-wider text-white/35">Optional</p>}
                   </motion.div>
@@ -94,7 +93,7 @@ export function StepFlow({ steps, projectName, projectAvatar, onClose, onSubmit,
                       <div className="grid gap-2">{(s.options || []).map((o) => {
                         const on = s.multi ? (multi[s.id] || []).includes(o) : ans[s.id] === o;
                         return <motion.button key={o} type="button" whileTap={{ scale: 0.97 }} onClick={() => { setErr(null); if (s.multi) setMulti((m) => ({ ...m, [s.id]: on ? (m[s.id] || []).filter((x) => x !== o) : [...(m[s.id] || []), o] })); else set(o); }}
-                          className={`rounded-2xl px-4 py-3 text-left text-sm font-medium ring-1 transition ${on ? "bg-pink text-white ring-pink shadow-[0_0_20px_-6px_#ff2fa6]" : "bg-white/5 text-white/80 ring-white/15 hover:ring-pink/40"}`}>{o}</motion.button>;
+                          className={`rounded-2xl px-4 py-3 text-left text-sm font-medium ring-1 transition ${on ? "grad text-white ring-pink shadow-[var(--raise-sm)]" : "bg-white/5 text-white/80 ring-white/15 hover:ring-pink/40"}`}>{o}</motion.button>;
                       })}</div>
                     )}
                     {s.type === "file" && (
@@ -109,8 +108,8 @@ export function StepFlow({ steps, projectName, projectAvatar, onClose, onSubmit,
                 </div>
               ) : (
                 <div className="text-center">
-                  <motion.img src="/brand/star-192.png" alt="" className="mx-auto h-20 w-20 drop-shadow-[0_0_24px_#ff2fa6]" animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.06, 1] }} transition={{ repeat: Infinity, duration: 3 }} />
-                  <h3 className="mt-4 font-display text-2xl font-semibold">Ready to apply</h3>
+                  <motion.img src="/brand/star-192.png" alt="" className="mx-auto h-20 w-20" />
+                  <h3 className="mt-4 font-display text-2xl font-bold">Ready to apply</h3>
                   <p className="mt-1 text-sm text-white/60">{answered} answer{answered === 1 ? "" : "s"} · your Shine profile, socials and wallet are attached. Sign with your Shine wallet to send.</p>
                 </div>
               )}

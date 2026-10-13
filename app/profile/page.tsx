@@ -91,7 +91,7 @@ function ProfileForm({ existing, uid, wallet, onSaved, onCancel, onError }: { ex
   return (
     <form onSubmit={submit} className="space-y-5">
       <div>
-        <h1 className="font-display text-3xl font-semibold">{existing ? "Edit profile" : "Set up your profile"}</h1>
+        <h1 className="font-display text-3xl font-bold">{existing ? "Edit profile" : "Set up your profile"}</h1>
         <p className="mt-1 text-sm text-white/55">Your Shine username is your X username. You can edit everything later.</p>
       </div>
       <Card className="p-5">
@@ -111,7 +111,7 @@ function ProfileForm({ existing, uid, wallet, onSaved, onCancel, onError }: { ex
             return (
               <motion.button type="button" key={id} onClick={() => setAvatar(id)} whileTap={{ scale: 0.9 }} className="relative rounded-full" aria-label={`Avatar ${id}`}>
                 <Avatar avatar={id} size={64} className={`!h-auto !w-full aspect-square transition ${on ? "" : "opacity-60 hover:opacity-100"}`} />
-                {on && <motion.span layoutId="avatar-ring" className="absolute -inset-1 rounded-full ring-2 ring-pink shadow-[0_0_18px_rgba(255,47,166,.8)]" />}
+                {on && <motion.span layoutId="avatar-ring" className="absolute -inset-1 rounded-full ring-2 ring-pink shadow-[var(--raise-sm)]" />}
               </motion.button>
             );
           })}
@@ -215,7 +215,7 @@ function ProjectApplicants({ uid }: { uid: string }) {
   return (
     <section className="mt-8">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="font-display text-lg font-semibold">Applicants</h2>
+        <h2 className="font-display text-lg font-bold">Applicants</h2>
         <Link href="/register" className="text-sm font-semibold text-pink hover:underline">Open Review</Link>
       </div>
       {!apps ? <div className="skeleton h-20 rounded-3xl" /> : !apps.length ? (

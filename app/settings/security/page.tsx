@@ -96,10 +96,10 @@ function Inner() {
   return (
     <div className="mx-auto max-w-2xl">
       <BackLink href="/settings" label="Settings" />
-      <h1 className="mb-1 font-display text-3xl font-semibold">Security</h1>
+      <h1 className="mb-1 font-display text-3xl font-bold">Security</h1>
       <p className="mb-5 text-sm text-white/55">Lock your conversations behind a PIN. Your PIN is hashed with a per-account salt on Shine's servers and attempts are rate-limited.</p>
       <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} className={`glass mb-5 flex items-center gap-4 rounded-3xl p-4 ${st.hasPin ? "neon" : ""}`}>
-        <motion.span animate={st.hasPin ? { rotate: [0, -8, 8, 0] } : {}} transition={{ repeat: Infinity, duration: 3, repeatDelay: 2 }} className={`grid h-12 w-12 place-items-center rounded-2xl ring-1 ${st.hasPin ? "bg-pink/15 text-pink ring-pink/40" : "bg-white/5 text-white/50 ring-white/15"}`}>{SI.lock}</motion.span>
+        <motion.span animate={st.hasPin ? { rotate: [0, -8, 8, 0] } : {}} transition={{ repeat: 0, duration: 3, repeatDelay: 2 }} className={`grid h-12 w-12 place-items-center rounded-2xl ring-1 ${st.hasPin ? "icon-grad neu-sm text-pink ring-pink/40" : "bg-white/5 text-white/50 ring-white/15"}`}>{SI.lock}</motion.span>
         <div className="flex-1"><p className="font-semibold">{st.hasPin ? "Chat PIN is on" : "Chat PIN is off"}</p><p className="text-xs text-white/50">{st.hasPin ? "Chat asks for your PIN each session." : "Anyone with your unlocked device can open your chats."}</p></div>
       </motion.div>
       <Section title="PIN">
@@ -129,7 +129,7 @@ function Inner() {
         {totp && (
           <div className="space-y-4 pb-4">
             <ol className="space-y-1 text-sm text-white/65"><li>1. Open Google Authenticator and tap <b className="text-white">+</b></li><li>2. Scan this QR code (or enter the key)</li><li>3. Enter the 6-digit code to confirm</li></ol>
-            <div className="mx-auto w-fit rounded-3xl bg-white p-3 shadow-[0_0_40px_-8px_rgba(255,47,166,.6)]"><QRCodeSVG value={totp.qr} size={192} level="M" aria-label="Authenticator QR code" /></div>
+            <div className="mx-auto w-fit rounded-3xl bg-white p-3 shadow-[var(--raise-sm)]"><QRCodeSVG value={totp.qr} size={192} level="M" aria-label="Authenticator QR code" /></div>
             <button className="mx-auto block break-all rounded-xl bg-white/[.05] px-3 py-2 text-center font-mono text-xs text-white/70" onClick={() => { navigator.clipboard.writeText(totp.secret); toast("Setup key copied", "ok"); }}>{totp.secret.match(/.{1,4}/g)?.join(" ")}</button>
             <p className="text-center text-[11px] text-white/40">Tap the key to copy it for manual entry (time-based, 6 digits)</p>
             <input className="input text-center font-mono !text-2xl tracking-[0.5em]" inputMode="numeric" maxLength={6} placeholder="000000" value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))} />

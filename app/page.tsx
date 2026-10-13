@@ -44,19 +44,19 @@ export default function Home() {
   return (
     <div className="mx-auto max-w-2xl">
       <div className="mb-3 flex items-center justify-between">
-        <h1 className="font-display text-3xl font-semibold tracking-tight">Home</h1>
+        <h1 className="font-display text-3xl font-bold tracking-tight">Home</h1>
         <div className="flex items-center gap-1.5">
           <a href={X_URL} target="_blank" rel="noopener noreferrer" aria-label="Shine on X" className="glass grid h-9 w-9 place-items-center rounded-full hover:border-pink/50"><XIcon size={15} /></a>
           <a href={TELEGRAM_GROUP_URL} target="_blank" rel="noopener noreferrer" aria-label="Shine Community on Telegram" className="glass grid h-9 w-9 place-items-center rounded-full text-[#2aabee] hover:border-pink/50"><TelegramIcon size={16} /></a>
           {profile?.role === "project" && <Link href="/events/new"><Button size="sm">{ICON.plus} Post</Button></Link>}
         </div>
       </div>
-      <div className="sticky top-16 z-20 -mx-4 mb-3 border-b border-white/[.06] bg-[#050307]/80 px-4 backdrop-blur-xl">
+      <div className="sticky top-16 z-20 -mx-4 mb-3 border-b border-white/[.06] bg-[#2b2b2e]/80 px-4">
         <div className="flex">
           {([["foryou", "For you"], ["latest", "Latest"]] as const).map(([k, l]) => (
             <button key={k} onClick={() => setTab(k)} className={`relative flex-1 py-3 text-[15px] font-semibold transition ${tab === k ? "text-white" : "text-white/45 hover:text-white/70"}`}>
               {l}
-              {tab === k && <motion.span layoutId="home-tab" className="absolute bottom-0 left-1/2 h-[3px] w-14 -translate-x-1/2 rounded-full bg-pink shadow-[0_0_12px_#ff2fa6]" />}
+              {tab === k && <motion.span layoutId="home-tab" className="absolute bottom-0 left-1/2 h-[3px] w-14 -translate-x-1/2 rounded-full bg-pink shadow-[var(--raise-sm)]" />}
             </button>
           ))}
         </div>

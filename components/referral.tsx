@@ -14,31 +14,31 @@ export function GiftIcon({ size = 20 }: { size?: number }) {
     <svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden>
       <rect x="4" y="11" width="16" height="9.5" rx="2" />
       <path d="M12 11v9.5" />
-      <motion.g animate={{ y: [0, -1.6, 0], rotate: [0, -4, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }} style={{ originX: "12px", originY: "9px" }}>
+      <motion.g style={{ originX: "12px", originY: "9px" }}>
         <rect x="3" y="7.5" width="18" height="3.5" rx="1.2" />
         <path d="M12 7.5C10.5 4 7 4 7 6s3 1.5 5 1.5M12 7.5C13.5 4 17 4 17 6s-3 1.5-5 1.5" />
       </motion.g>
-      <motion.path d="M20.5 3.5v2M19.5 4.5h2" animate={{ opacity: [0, 1, 0], scale: [0.6, 1, 0.6] }} transition={{ duration: 1.6, repeat: Infinity }} />
+      <motion.path d="M20.5 3.5v2M19.5 4.5h2" />
     </svg>
   );
 }
 export function UsersIcon({ size = 20 }: { size?: number }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden><circle cx="9" cy="8" r="3.5" /><path d="M3 20a6 6 0 0 1 12 0" /><motion.g animate={{ x: [0, 1.2, 0] }} transition={{ duration: 2, repeat: Infinity }}><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a5.5 5.5 0 0 1 3 5" /></motion.g></svg>;
+  return <svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden><circle cx="9" cy="8" r="3.5" /><path d="M3 20a6 6 0 0 1 12 0" /><motion.g><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a5.5 5.5 0 0 1 3 5" /></motion.g></svg>;
 }
 export function CheckBadgeIcon({ size = 20 }: { size?: number }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden><motion.path d="M12 2.5l2.4 1.8 3-.2.9 2.9 2.4 1.8-1 2.8 1 2.8-2.4 1.8-.9 2.9-3-.2L12 21.5l-2.4-1.8-3 .2-.9-2.9-2.4-1.8 1-2.8-1-2.8 2.4-1.8.9-2.9 3 .2z" animate={{ rotate: 360 }} transition={{ duration: 18, repeat: Infinity, ease: "linear" }} style={{ originX: "12px", originY: "12px" }} /><motion.path d="M8.5 12.2l2.4 2.4 4.6-4.8" initial={{ pathLength: 0 }} animate={{ pathLength: [0, 1, 1] }} transition={{ duration: 2.4, repeat: Infinity }} /></svg>;
+  return <svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden><motion.path d="M12 2.5l2.4 1.8 3-.2.9 2.9 2.4 1.8-1 2.8 1 2.8-2.4 1.8-.9 2.9-3-.2L12 21.5l-2.4-1.8-3 .2-.9-2.9-2.4-1.8 1-2.8-1-2.8 2.4-1.8.9-2.9 3 .2z" animate={{ rotate: 360 }} transition={{ duration: 18, repeat: 0, ease: "linear" }} style={{ originX: "12px", originY: "12px" }} /><motion.path d="M8.5 12.2l2.4 2.4 4.6-4.8" /></svg>;
 }
 export function CoinIcon({ size = 20 }: { size?: number }) {
-  return <motion.svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden animate={{ rotateY: [0, 180, 360] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}><circle cx="12" cy="12" r="8.5" /><path d="M8.5 9.5h7l-1.5 1.5h-7zM8.5 14.5h7l-1.5-1.5h-7z" /></motion.svg>;
+  return <motion.svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden><circle cx="12" cy="12" r="8.5" /><path d="M8.5 9.5h7l-1.5 1.5h-7zM8.5 14.5h7l-1.5-1.5h-7z" /></motion.svg>;
 }
 export function LinkIcon({ size = 20 }: { size?: number }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden><motion.path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" animate={{ x: [0, 0.8, 0], y: [0, -0.8, 0] }} transition={{ duration: 1.6, repeat: Infinity }} /><motion.path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" animate={{ x: [0, -0.8, 0], y: [0, 0.8, 0] }} transition={{ duration: 1.6, repeat: Infinity }} /></svg>;
+  return <svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden><motion.path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" /><motion.path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" /></svg>;
 }
 export function PulseIcon({ size = 20 }: { size?: number }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden><motion.path d="M3 12h4l2-5 4 10 2-5h6" initial={{ pathLength: 0 }} animate={{ pathLength: [0, 1] }} transition={{ duration: 1.8, repeat: Infinity }} /></svg>;
+  return <svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden><motion.path d="M3 12h4l2-5 4 10 2-5h6" /></svg>;
 }
 export function ShieldAlertIcon({ size = 20 }: { size?: number }) {
-  return <svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z" /><motion.path d="M12 8v5M12 16.5v.01" animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} /></svg>;
+  return <svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z" /><motion.path d="M12 8v5M12 16.5v.01" /></svg>;
 }
 export function CopyIcon({ size = 18 }: { size?: number }) {
   return <svg width={size} height={size} viewBox="0 0 24 24" {...S} aria-hidden><rect x="8" y="8" width="12" height="12" rx="2.5" /><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" /></svg>;
@@ -54,9 +54,8 @@ export function LockIcon({ size = 16 }: { size?: number }) {
 export function ReferralButton() {
   return (
     <Link href="/referral" aria-label="Referral">
-      <motion.span whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.92 }}
-        className="relative flex h-9 items-center gap-1.5 rounded-full border border-pink/40 bg-pink/10 px-2.5 text-pink shadow-[0_0_18px_-6px_rgba(255,47,166,.9)] hover:bg-pink/20">
-        <motion.span className="absolute inset-0 rounded-full ring-1 ring-pink/50" animate={{ opacity: [0.6, 0, 0.6], scale: [1, 1.15, 1] }} transition={{ duration: 2.4, repeat: Infinity }} />
+      <motion.span whileTap={{ scale: 0.95 }}
+        className="icon-grad neu-sm relative flex h-10 items-center gap-1.5 rounded-[14px] px-3 text-pink active:shadow-[var(--inset)]">
         <GiftIcon size={18} />
         <span className="hidden text-xs font-semibold text-white min-[400px]:inline">Referral</span>
       </motion.span>
@@ -93,7 +92,7 @@ const STATUS: Record<RefStatus, { label: string; cls: string }> = {
   eligible: { label: "Eligible", cls: "bg-emerald-400/10 text-emerald-300 ring-emerald-400/30" },
   requested: { label: "Requested", cls: "bg-amber-400/10 text-amber-300 ring-amber-400/30" },
   review: { label: "Under team review", cls: "bg-sky-400/10 text-sky-300 ring-sky-400/30" },
-  approved: { label: "Approved · claim open", cls: "bg-pink/15 text-pink ring-pink/40" },
+  approved: { label: "Approved · claim open", cls: "icon-grad neu-sm text-pink ring-pink/40" },
   paid: { label: "Paid", cls: "bg-emerald-400/15 text-emerald-300 ring-emerald-400/40" },
   rejected: { label: "Rejected", cls: "bg-red-500/10 text-red-300 ring-red-500/30" },
 };

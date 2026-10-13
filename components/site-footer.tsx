@@ -12,7 +12,7 @@ export function SiteFooter() {
     <footer className="mt-12 border-t border-white/10 pb-28 pt-8 text-sm">
       <div className="grid gap-8 sm:grid-cols-[1.4fr_1fr_1fr]">
         <div>
-          <div className="flex items-center gap-2"><img src="/brand/star-64.png" alt="" className="h-7 w-7" /><span className="font-display text-lg font-semibold">Shine</span></div>
+          <div className="flex items-center gap-2"><img src="/brand/star-64.png" alt="" className="h-7 w-7" /><span className="font-display text-lg font-bold">Shine</span></div>
           <p className="mt-2 max-w-xs text-white/50">Web3 work, paid in SOL. Find opportunities, get hired and get paid on Solana.</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {[{ h: X_URL, i: <XIcon size={15} />, t: "X" }, { h: TG_URL, i: <TelegramIcon size={15} />, t: "Telegram" }, { h: TELEGRAM_GROUP_URL, i: <TelegramIcon size={15} />, t: "Shine Community" }].map((s) => (

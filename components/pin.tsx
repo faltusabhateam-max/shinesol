@@ -32,14 +32,13 @@ export function PinPad({ onComplete, error, busy, title, sub }: { onComplete: (p
   return (
     <div className="flex flex-col items-center">
       <motion.div className="relative mb-4 grid h-16 w-16 place-items-center" animate={{ rotate: busy ? 360 : 0 }} transition={busy ? { repeat: Infinity, duration: 1.2, ease: "linear" } : {}}>
-        <motion.span className="absolute inset-0 rounded-full bg-pink/30 blur-xl" animate={{ scale: [1, 1.25, 1] }} transition={{ repeat: Infinity, duration: 2.2 }} />
         <img src="/brand/star-192.png" alt="" className="relative h-14 w-14" />
       </motion.div>
-      <h2 className="font-display text-2xl font-semibold">{title}</h2>
+      <h2 className="font-display text-2xl font-bold">{title}</h2>
       {sub && <p className="mt-1 max-w-xs text-center text-sm text-white/55">{sub}</p>}
       <motion.div animate={shake} className="my-6 flex gap-4">
         {[0, 1, 2, 3].map((i) => (
-          <motion.span key={i} animate={{ scale: pin.length > i ? 1.15 : 1 }} className={`h-4 w-4 rounded-full border-2 ${pin.length > i ? "border-pink bg-pink shadow-[0_0_14px_#ff2fa6]" : "border-white/30"}`} />
+          <motion.span key={i} animate={{ scale: pin.length > i ? 1.15 : 1 }} className={`h-4 w-4 rounded-full border-2 ${pin.length > i ? "border-pink bg-pink shadow-[var(--raise-sm)]" : "border-white/30"}`} />
         ))}
       </motion.div>
       <p className="mb-3 h-5 text-sm text-red-300">{error || ""}</p>

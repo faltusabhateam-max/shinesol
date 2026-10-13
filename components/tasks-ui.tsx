@@ -13,7 +13,7 @@ import { LAMPORTS } from "@/lib/solana";
 export const subIcon = (t: SubTask["type"]) => SUBTASK_TYPES.find((x) => x.type === t)?.icon || "task";
 
 export function TaskStatus({ status }: { status: TaskCampaign["status"] }) {
-  const m = { open: ["Open", "bg-pink/15 text-pink-soft border-pink/40", "bg-pink animate-pulse"], completed: ["Completed", "bg-emerald-400/15 text-emerald-200 border-emerald-300/30", "bg-emerald-300"],
+  const m = { open: ["Open", "icon-grad neu-sm text-pink-soft border-pink/40", "bg-pink animate-pulse"], completed: ["Completed", "bg-emerald-400/15 text-emerald-200 border-emerald-300/30", "bg-emerald-300"],
     cancelled: ["Closed", "bg-white/10 text-white/60 border-white/15", "bg-white/50"], funding: ["Awaiting funding", "bg-amber-400/15 text-amber-200 border-amber-300/30", "bg-amber-300 animate-pulse"] }[status];
   return <span className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold ${m[1]}`}><span className={`h-1.5 w-1.5 rounded-full ${m[2]}`} />{m[0]}</span>;
 }
@@ -23,7 +23,7 @@ export function SlotsBar({ used, total }: { used: number; total: number }) {
   return (
     <div>
       <div className="mb-1 flex justify-between text-xs text-white/55"><span className="flex items-center gap-1"><LIcon name="users" size={13} />{used}/{total} slots</span><span>{Math.round(pct)}%</span></div>
-      <div className="h-2 overflow-hidden rounded-full bg-white/10"><motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 0.8, ease: "easeOut" }} className="h-full rounded-full bg-gradient-to-r from-pink to-[#ff7ac8] shadow-[0_0_12px_#ff2fa6]" /></div>
+      <div className="h-2 overflow-hidden rounded-full neu-inset"><motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 0.8, ease: "easeOut" }} className="h-full rounded-full grad" /></div>
     </div>
   );
 }
@@ -42,7 +42,7 @@ export function TaskCard({ t, index = 0 }: { t: TaskCampaign; index?: number }) 
         <TaskStatus status={t.status} />
       </div>
       <Link href={`/tasks/${t.id}`} className="mt-3 block">
-        <h3 className="font-display text-[17px] font-semibold leading-snug">{t.title}</h3>
+        <h3 className="font-display text-[17px] font-bold leading-snug">{t.title}</h3>
         <p className="mt-1 line-clamp-2 text-sm text-white/60">{t.description}</p>
         <div className="mt-3 flex flex-wrap gap-1.5">
           {t.subtasks.map((s) => <span key={s.id} className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-white/10 bg-white/[.04] px-2.5 py-1 text-xs text-white/75"><LIcon name={subIcon(s.type)} size={13} className="text-pink" /><span className="truncate">{subLabel(s)}</span></span>)}
@@ -51,7 +51,7 @@ export function TaskCard({ t, index = 0 }: { t: TaskCampaign; index?: number }) 
       <div className="mt-3 flex items-end gap-3">
         <div className="shrink-0 rounded-2xl bg-pink/12 px-3 py-2 ring-1 ring-pink/30">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-pink-soft">Reward</p>
-          <p className="font-display text-lg font-semibold leading-none">{fmtUsd(t.rewardUsd)}</p>
+          <p className="font-display text-lg font-bold leading-none">{fmtUsd(t.rewardUsd)}</p>
           <p className="mt-0.5 text-[11px] text-white/50">{fmtSol(t.rewardLamports / LAMPORTS, 4)} SOL</p>
         </div>
         <div className="min-w-0 flex-1"><SlotsBar used={t.claimed} total={t.limit} /></div>

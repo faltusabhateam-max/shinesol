@@ -37,9 +37,9 @@ export default function AdminTasks() {
   return (
     <div>
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-pink">Shine team</p><h1 className="font-display text-3xl font-semibold">Tasks review</h1>
+        <div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-pink">Shine team</p><h1 className="font-display text-3xl font-bold">Tasks review</h1>
           <p className="text-sm text-white/50">Approve pays the reward from the vault instantly. Reject frees the slot. Ask to complete sends the claim back.</p></div>
-        <div className="flex rounded-2xl bg-white/5 p-1 text-sm font-semibold">{(["queue", "campaigns"] as const).map((k) => <button key={k} onClick={() => setTab(k)} className={`rounded-xl px-4 py-2 ${tab === k ? "bg-pink text-white" : "text-white/60"}`}>{k === "queue" ? `Queue${queue ? ` · ${queue.length}` : ""}` : "Campaigns"}</button>)}</div>
+        <div className="flex rounded-2xl bg-white/5 p-1 text-sm font-semibold">{(["queue", "campaigns"] as const).map((k) => <button key={k} onClick={() => setTab(k)} className={`rounded-xl px-4 py-2 ${tab === k ? "grad text-white" : "text-white/60"}`}>{k === "queue" ? `Queue${queue ? ` · ${queue.length}` : ""}` : "Campaigns"}</button>)}</div>
       </div>
 
       {tab === "queue" && <div className="mt-5 grid gap-3 lg:grid-cols-2">

@@ -40,11 +40,11 @@ export default function AdminReferrals() {
     <div>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="flex items-center gap-2 font-display text-2xl font-semibold"><span className="text-pink"><GiftIcon size={24} /></span>Referrals</h1>
+          <h1 className="flex items-center gap-2 font-display text-2xl font-bold"><span className="text-pink"><GiftIcon size={24} /></span>Referrals</h1>
           <p className="text-sm text-white/50">Qualified = verified by the team + active {REF_ACTIVE_DAYS}/{REF_WINDOW_DAYS} days. Review requests, grant badges, fund and open SOL claims.</p>
         </div>
         <form onSubmit={(e) => { e.preventDefault(); if (lookup.trim()) openUser({ username: lookup.trim() }); }} className="flex w-full gap-2 sm:w-auto">
-          <input value={lookup} onChange={(e) => setLookup(e.target.value)} placeholder="Look up @username" className="min-w-0 flex-1 rounded-xl border border-white/10 bg-black/40 px-3 py-2 text-sm outline-none focus:border-pink/50 sm:w-56" />
+          <input value={lookup} onChange={(e) => setLookup(e.target.value)} placeholder="Look up @username" className="min-w-0 flex-1 rounded-xl bg-[#2a2a2d] shadow-[var(--inset)] px-3 py-2 text-sm outline-none focus:border-pink/50 sm:w-56" />
           <Button size="sm" type="submit">Referrals</Button>
         </form>
       </div>
@@ -68,7 +68,7 @@ export default function AdminReferrals() {
       <div className="mb-4 flex gap-1 overflow-x-auto">
         {FILTERS.map((f) => (
           <button key={f} type="button" onClick={() => setFilter(f)} className={`relative rounded-xl px-3 py-1.5 text-sm font-semibold capitalize ${filter === f ? "text-white" : "text-white/50 hover:text-white"}`}>
-            {filter === f && <motion.span layoutId="ref-filter" className="absolute inset-0 rounded-xl bg-pink/15 ring-1 ring-pink/40" />}<span className="relative">{f}</span>
+            {filter === f && <motion.span layoutId="ref-filter" className="absolute inset-0 rounded-xl neu-inset" />}<span className="relative">{f}</span>
           </button>
         ))}
       </div>
@@ -95,7 +95,7 @@ export default function AdminReferrals() {
                 {c.status === "requested" && <Button size="sm" variant="glass" loading={busy === c.id + "review"} onClick={() => run(c, "review", {}, "Moved to review")}>Start review</Button>}
                 {c.kind === "badge" && ["requested", "review"].includes(c.status) && <Button size="sm" loading={busy === c.id + "grant_badge"} onClick={() => run(c, "grant_badge", {}, "Permanent badge granted")}>Grant badge</Button>}
                 {c.kind === "usd" && c.status === "review" && !c.funded && <>
-                  <input value={fundTx[c.id] || ""} onChange={(e) => setFundTx({ ...fundTx, [c.id]: e.target.value })} placeholder="Funding tx (optional)" className="min-w-0 flex-1 rounded-xl border border-white/10 bg-black/40 px-2 py-1 text-xs outline-none" />
+                  <input value={fundTx[c.id] || ""} onChange={(e) => setFundTx({ ...fundTx, [c.id]: e.target.value })} placeholder="Funding tx (optional)" className="min-w-0 flex-1 rounded-xl bg-[#2a2a2d] shadow-[var(--inset)] px-2 py-1 text-xs outline-none" />
                   <Button size="sm" loading={busy === c.id + "mark_funded"} onClick={() => run(c, "mark_funded", { fundTx: fundTx[c.id] || "" }, "Marked funded")}>Mark funded</Button></>}
                 {c.kind === "usd" && c.status === "review" && c.funded && <Button size="sm" loading={busy === c.id + "open_claim"} onClick={() => run(c, "open_claim", {}, "Claim opened for the user")}>Open claim</Button>}
                 {c.payoutError && <Button size="sm" variant="ghost" onClick={() => window.confirm("Only unlock after confirming on Solscan that no payout landed. Continue?") && run(c, "unlock_payout", {}, "Payout unlocked")}>Unlock payout</Button>}
@@ -108,10 +108,10 @@ export default function AdminReferrals() {
 
       <AnimatePresence>
         {detail && (
-          <motion.div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-2 backdrop-blur-sm sm:items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setDetail(null)}>
+          <motion.div className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-2 sm:items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setDetail(null)}>
             <motion.div initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 40, opacity: 0 }} onClick={(e) => e.stopPropagation()} className="glass-strong max-h-[85dvh] w-full max-w-2xl overflow-y-auto rounded-3xl p-4 sm:p-5">
               <div className="flex items-center justify-between gap-2">
-                <div><p className="font-display text-lg font-semibold">@{detail.username}</p><p className="text-xs text-white/50">{detail.total} total · <span className="text-pink">{detail.qualified} qualified</span></p></div>
+                <div><p className="font-display text-lg font-bold">@{detail.username}</p><p className="text-xs text-white/50">{detail.total} total · <span className="text-pink">{detail.qualified} qualified</span></p></div>
                 <Button size="sm" variant="ghost" onClick={() => setDetail(null)}>Close</Button>
               </div>
               {!detail.referrals.length ? <p className="mt-4 text-sm text-white/50">No referrals.</p> : (

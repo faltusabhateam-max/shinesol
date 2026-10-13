@@ -50,7 +50,7 @@ function useAvatar(uid?: string | null) {
 function Seal({ size }: { size: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24">
-      <path fill="#ff2fa6" d="M12 1.5l2.6 1.9 3.2-.2 1 3.1 2.6 1.9-1 3.1 1 3.1-2.6 1.9-1 3.1-3.2-.2L12 22.5l-2.6-1.9-3.2.2-1-3.1-2.6-1.9 1-3.1-1-3.1 2.6-1.9 1-3.1 3.2.2z" />
+      <path fill="#ff5e8a" d="M12 1.5l2.6 1.9 3.2-.2 1 3.1 2.6 1.9-1 3.1 1 3.1-2.6 1.9-1 3.1-3.2-.2L12 22.5l-2.6-1.9-3.2.2-1-3.1-2.6-1.9 1-3.1-1-3.1 2.6-1.9 1-3.1 3.2.2z" />
       <path d="M7.8 12.3l2.7 2.7 5.7-5.8" fill="none" stroke="#fff" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
@@ -63,7 +63,7 @@ function LinkBadge({ href, title, size, children }: { href: string; title: strin
     <motion.span {...pop} role="link" tabIndex={0} title={title} aria-label={title}
       onClick={(e) => { e.preventDefault(); e.stopPropagation(); r.push(href); }}
       onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); r.push(href); } }}
-      className="inline-flex shrink-0 cursor-pointer overflow-hidden rounded-[5px] ring-1 ring-white/20 hover:ring-[#ff2fa6]" style={{ width: size, height: size }}>
+      className="inline-flex shrink-0 cursor-pointer overflow-hidden rounded-[5px] ring-1 ring-white/20 hover:ring-[#ff5e8a]" style={{ width: size, height: size }}>
       {children}
     </motion.span>
   );
@@ -86,7 +86,7 @@ export function VerifiedBadge({ uid, force, size = 16, className = "" }: { uid?:
   return (
     <span className={`inline-flex shrink-0 items-center gap-1 ${className}`}>
       {seal && (
-        <motion.span {...pop} title={isOfficial ? "Officially verified by the Shine team" : "Shine Verified"} aria-label="Verified" className="inline-flex shrink-0 drop-shadow-[0_0_6px_rgba(255,47,166,.7)]">
+        <motion.span {...pop} title={isOfficial ? "Officially verified by the Shine team" : "Shine Verified"} aria-label="Verified" className="inline-flex shrink-0">
           <Seal size={size} />
         </motion.span>
       )}
@@ -97,7 +97,7 @@ export function VerifiedBadge({ uid, force, size = 16, className = "" }: { uid?:
       )}
       {aff && !isOfficial && (
         <LinkBadge href={`/u/${aff.u}`} title={`Affiliated with @${aff.u}`} size={size}>
-          {avatar ? <img src={avatar} alt="" className="h-full w-full object-cover" /> : <span className="h-full w-full bg-[#ff2fa6]/40" />}
+          {avatar ? <img src={avatar} alt="" className="h-full w-full object-cover" /> : <span className="h-full w-full bg-[#ff5e8a]/40" />}
         </LinkBadge>
       )}
     </span>

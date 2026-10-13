@@ -47,10 +47,9 @@ function Inner() {
   return (
     <div className="mx-auto max-w-2xl">
       <BackLink href="/profile" label="Profile" />
-      <motion.h1 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-4 font-display text-3xl font-semibold">Settings</motion.h1>
+      <motion.h1 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-4 font-display text-3xl font-bold">Settings</motion.h1>
 
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass neon relative mb-5 flex items-center gap-3 overflow-hidden rounded-3xl p-4">
-        <motion.div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-pink/25 blur-3xl" animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 4 }} />
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="glass relative mb-5 flex items-center gap-3 overflow-hidden rounded-3xl p-4">
         <Avatar avatar={profile?.avatar} size={54} ring />
         <div className="relative min-w-0 flex-1">
           <p className="flex items-center gap-1 min-w-0 text-lg font-semibold"><span className="truncate">{displayName(profile)}</span>{uid && <VerifiedBadge uid={uid} />}</p>

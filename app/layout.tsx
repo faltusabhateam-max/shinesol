@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Montserrat, Poppins } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/providers";
 import AppShell from "@/components/shell";
 import { SITE_URL } from "@/lib/config";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const poppins = Poppins({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-poppins", display: "swap" });
+const montserrat = Montserrat({ subsets: ["latin"], weight: ["500", "600", "700", "800"], variable: "--font-montserrat", display: "swap" });
+const poppins = Poppins({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"], variable: "--font-poppins", display: "swap" });
 
 const title = "Shine — Web3 Jobs, Paid in $SOL";
 const description = "Discover Web3 opportunities and jobs, apply directly to projects, and get paid in SOL straight to your Shine Wallet. Powered by Solana.";
@@ -29,12 +29,13 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", site: "@ShineSol_", title, description, images: ["/og.jpg"] },
 };
 
-export const viewport: Viewport = { themeColor: "#050307", width: "device-width", initialScale: 1, viewportFit: "cover" };
+export const viewport: Viewport = { themeColor: "#2b2b2e", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
+    <html lang="en" className={`${montserrat.variable} ${poppins.variable}`}>
       <body className="bg-aura min-h-dvh font-sans">
+        <svg width="0" height="0" aria-hidden className="absolute"><defs><linearGradient id="shine-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ff5e8a" /><stop offset=".5" stopColor="#ff8a5c" /><stop offset="1" stopColor="#8e44ad" /></linearGradient></defs></svg>
         <Providers>
           <AppShell>{children}</AppShell>
         </Providers>

@@ -32,9 +32,9 @@ function PostDetail({ p, onClose }: { p: Post; onClose: () => void }) {
       </div>
       <p className="mt-3 whitespace-pre-wrap text-[15px] leading-relaxed text-white/85">{p.text}</p>
       {p.image && <div className="mt-3 overflow-hidden rounded-2xl bg-white/[.015]"><img src={p.image} alt="" className="block h-auto w-full" /></div>}
-      <h3 className="mt-5 font-display font-semibold">Form · {p.form.length} steps</h3>
+      <h3 className="mt-5 font-display font-bold">Form · {p.form.length} steps</h3>
       <div className="mt-2 flex flex-wrap gap-1.5">{p.form.map((f) => <span key={f.id} className="inline-flex items-center gap-1.5 rounded-full bg-white/[.05] py-1 pl-1 pr-2.5 text-xs text-white/70"><TypeBadge type={f.type} size={20} />{f.label}{f.required ? <span className="text-pink">*</span> : null}</span>)}</div>
-      <h3 className="mt-5 font-display font-semibold">Applications <span className="text-white/40">{apps?.length ?? ""}</span></h3>
+      <h3 className="mt-5 font-display font-bold">Applications <span className="text-white/40">{apps?.length ?? ""}</span></h3>
       <div className="mt-2 space-y-2">
         {apps === null ? <StarLoader size={28} /> : !apps.length ? <p className="text-sm text-white/40">No applications yet.</p> : apps.map((a) => (
           <div key={a.id} className="rounded-2xl border border-white/10 bg-white/[.03]">
@@ -70,7 +70,7 @@ export default function AdminPosts() {
   const selected = posts?.find((p) => p.id === sel) || null;
   return (
     <div>
-      <h1 className="font-display text-3xl font-semibold">Posts</h1>
+      <h1 className="font-display text-3xl font-bold">Posts</h1>
       <p className="mb-5 text-sm text-white/50">{posts ? `${posts.length} total · ${posts.filter(isPostOpen).length} open` : "Loading…"}</p>
       <div className="relative mb-3"><span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/40">{ICON.search}</span>
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search posts, projects or usernames" className="input !rounded-2xl !py-3.5 !pl-11" /></div>

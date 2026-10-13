@@ -13,9 +13,9 @@ export function Section({ title, children, delay = 0 }: { title: string; childre
 }
 export function Row({ icon, title, sub, href, onClick, right, external, danger }: { icon: ReactNode; title: ReactNode; sub?: ReactNode; href?: string; onClick?: () => void; right?: ReactNode; external?: boolean; danger?: boolean }) {
   const inner = (
-    <motion.div whileTap={{ scale: 0.99 }} className="flex items-center gap-3 px-4 py-3.5 transition hover:bg-white/[.03]">
-      <motion.span whileHover={{ rotate: -10, scale: 1.08 }} className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl ring-1 ${danger ? "bg-red-500/10 text-red-300 ring-red-400/30" : "bg-pink/12 text-pink ring-pink/25"}`}>{icon}</motion.span>
-      <div className="min-w-0 flex-1"><p className={`truncate text-[15px] font-semibold ${danger ? "text-red-200" : ""}`}>{title}</p>{sub && <p className="truncate text-xs text-white/50">{sub}</p>}</div>
+    <motion.div whileTap={{ scale: 0.99 }} className="flex items-center gap-3 px-4 py-4 transition hover:bg-white/[.025]">
+      <span className={`neu-sm grid h-10 w-10 shrink-0 place-items-center rounded-[14px] ${danger ? "text-red-300" : "icon-grad text-pink"}`}>{icon}</span>
+      <div className="min-w-0 flex-1"><p className={`truncate text-[15px] font-medium ${danger ? "text-red-200" : ""}`}>{title}</p>{sub && <p className="truncate text-xs text-white/50">{sub}</p>}</div>
       {right ?? ((href || onClick) && <svg className="text-white/30" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>)}
     </motion.div>
   );
@@ -25,8 +25,8 @@ export function Row({ icon, title, sub, href, onClick, right, external, danger }
 }
 export function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
-    <button type="button" role="switch" aria-checked={on} aria-label={label} onClick={() => onChange(!on)} className={`relative h-7 w-12 shrink-0 rounded-full transition ${on ? "bg-pink shadow-[0_0_16px_-2px_#ff2fa6]" : "bg-white/15"}`}>
-      <motion.span layout transition={{ type: "spring", stiffness: 500, damping: 30 }} className={`absolute top-1 h-5 w-5 rounded-full bg-white ${on ? "right-1" : "left-1"}`} />
+    <button type="button" role="switch" aria-checked={on} aria-label={label} onClick={() => onChange(!on)} className={`relative h-7 w-12 shrink-0 rounded-full transition ${on ? "grad" : "neu-inset"}`}>
+      <motion.span layout transition={{ type: "spring", stiffness: 500, damping: 30 }} className={`absolute top-1 h-5 w-5 rounded-full bg-[#f4f4f6] shadow ${on ? "right-1" : "left-1"}`} />
     </button>
   );
 }

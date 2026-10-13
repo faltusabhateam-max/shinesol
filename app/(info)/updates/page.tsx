@@ -13,7 +13,7 @@ export default function Page() {
   return (<>
     <DocHeader kicker="Resources" title="Tech updates" sub="What we've shipped recently." />
     <ol className="relative space-y-4 border-l border-pink/30 pl-6">{U.map(([d, t, s]) => (
-      <li key={t} className="relative"><span className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-pink shadow-[0_0_12px_#ff2fa6]" />
+      <li key={t} className="relative"><span className="absolute -left-[31px] top-1.5 h-3 w-3 rounded-full bg-pink shadow-[var(--raise-sm)]" />
         <p className="text-xs text-white/40">{d}</p><h3 className="font-semibold">{t}</h3><p className="text-sm text-white/60">{s}</p></li>
     ))}</ol>
   </>);
